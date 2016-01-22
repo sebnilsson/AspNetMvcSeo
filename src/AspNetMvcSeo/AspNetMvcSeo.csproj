@@ -83,6 +83,7 @@
     <Compile Include="SeoWebViewPageOfT.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="AspNetMvcSeo.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

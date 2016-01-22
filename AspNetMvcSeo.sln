@@ -9,11 +9,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{BA3D6C9F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetMvcSeo.Tests", "tests\AspNetMvcSeo.Tests\AspNetMvcSeo.Tests.csproj", "{699BCB38-9548-4329-BF78-4768AF472CF6}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuget", "Nuget", "{71D22455-86B3-4E11-AD04-7585601B8837}"
-	ProjectSection(SolutionItems) = preProject
-		src\AspNetMvcSeo\AspNetMvcSeo.nuspec = src\AspNetMvcSeo\AspNetMvcSeo.nuspec
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
