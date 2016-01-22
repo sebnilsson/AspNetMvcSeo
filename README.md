@@ -3,7 +3,7 @@
 Tools for SEO in ASP.NET MVC.
 
 ## Attributes
-The following attributes are available for you Controller-actions:
+The following attributes are available for your Controller-actions:
 
 - `[SeoCanonicalLink]`: Sets the value for canonical link
 - `[SeoMetaDescription]`: Sets the meta-description
