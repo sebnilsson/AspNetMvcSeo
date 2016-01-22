@@ -7,7 +7,7 @@ namespace AspNetMvcSeo.Tests
     public class HtmlHelperSeoExtensionsTest
     {
         [Fact]
-        public void CanonicalLink_Empty_ReturnsNull()
+        public void CanonicalLink_EmptyArgument_ReturnsNull()
         {
             // Arrange
             var htmlHelper = HtmlHelperTestUtility.Get();
@@ -20,7 +20,7 @@ namespace AspNetMvcSeo.Tests
         }
 
         [Fact]
-        public void CanonicalLink_EmptyWithValueInSeoHelper_ReturnsHtmlContainingValue()
+        public void CanonicalLink_EmptyArgumentWithValueInSeoHelper_ReturnsHtmlContainingValue()
         {
             // Arrange
             var seoData = new Dictionary<object, object>();
@@ -37,7 +37,7 @@ namespace AspNetMvcSeo.Tests
         }
 
         [Fact]
-        public void CanonicalLink_WithValue_ReturnsHtmlContainingValue()
+        public void CanonicalLink_WithArgument_ReturnsHtmlContainingValue()
         {
             // Arrange
             var htmlHelper = HtmlHelperTestUtility.Get();
@@ -52,7 +52,7 @@ namespace AspNetMvcSeo.Tests
         }
 
         [Fact]
-        public void MetaDescription_Empty_ReturnsNull()
+        public void MetaDescription_EmptyArgument_ReturnsNull()
         {
             // Arrange
             var htmlHelper = HtmlHelperTestUtility.Get();
@@ -65,7 +65,7 @@ namespace AspNetMvcSeo.Tests
         }
 
         [Fact]
-        public void MetaDescription_EmptyWithValueInSeoHelper_ReturnsHtmlContainingValue()
+        public void MetaDescription_EmptyArgumentWithValueInSeoHelper_ReturnsHtmlContainingValue()
         {
             // Arrange
             var seoData = new Dictionary<object, object>();
@@ -82,7 +82,7 @@ namespace AspNetMvcSeo.Tests
         }
 
         [Fact]
-        public void MetaDescription_WithValue_ReturnsHtmlContainingValue()
+        public void MetaDescription_WithArgument_ReturnsHtmlContainingValue()
         {
             // Arrange
             var htmlHelper = HtmlHelperTestUtility.Get();
@@ -97,7 +97,7 @@ namespace AspNetMvcSeo.Tests
         }
 
         [Fact]
-        public void MetaKeywords_Empty_ReturnsNull()
+        public void MetaKeywords_EmptyArgument_ReturnsNull()
         {
             // Arrange
             var htmlHelper = HtmlHelperTestUtility.Get();
@@ -110,7 +110,7 @@ namespace AspNetMvcSeo.Tests
         }
 
         [Fact]
-        public void MetaKeywords_EmptyWithValueInSeoHelper_ReturnsHtmlContainingValue()
+        public void MetaKeywords_EmptyArgumentWithValueInSeoHelper_ReturnsHtmlContainingValue()
         {
             // Arrange
             var seoData = new Dictionary<object, object>();
@@ -127,7 +127,7 @@ namespace AspNetMvcSeo.Tests
         }
 
         [Fact]
-        public void MetaKeywords_WithValue_ReturnsHtmlContainingValue()
+        public void MetaKeywords_WithArgument_ReturnsHtmlContainingValue()
         {
             // Arrange
             var htmlHelper = HtmlHelperTestUtility.Get();
@@ -142,7 +142,7 @@ namespace AspNetMvcSeo.Tests
         }
 
         [Fact]
-        public void MetaRobotsIndex_Empty_ReturnsNull()
+        public void MetaRobotsIndex_EmptyArgument_ReturnsNull()
         {
             // Arrange
             var htmlHelper = HtmlHelperTestUtility.Get();
@@ -154,11 +154,33 @@ namespace AspNetMvcSeo.Tests
             Assert.Null(html);
         }
 
+        [Fact]
+        public void MetaRobotsIndex_EmptyArgumentWithMetaRobotsNoIndexInSeoHelper_ReturnsHtmlContainingValue()
+        {
+            // Arrange
+            var seoData = new Dictionary<object, object>();
+            var seoHelper = new SeoHelper(seoData) { MetaRobotsNoIndex = true };
+            var htmlHelper = HtmlHelperTestUtility.Get(seoData);
+
+            // Act
+            var html = htmlHelper.MetaRobotsIndex();
+
+            // Assert
+            bool htmlContainsGoogleBot = html.Contains(HtmlHelperSeoExtensions.GoogleBotMetaName);
+            bool htmlContainsRobots = html.Contains(HtmlHelperSeoExtensions.RobotsMetaName);
+            var defaultRobotsNoIndex = RobotsIndexManager.GetMetaContent(RobotsIndexManager.DefaultRobotsNoIndex);
+            bool htmlContainsMetaContent = html.Contains(defaultRobotsNoIndex);
+
+            Assert.True(htmlContainsGoogleBot);
+            Assert.True(htmlContainsRobots);
+            Assert.True(htmlContainsMetaContent);
+        }
+
         [Theory]
         [InlineData(RobotsIndex.IndexNoFollow)]
         [InlineData(RobotsIndex.NoIndexFollow)]
         [InlineData(RobotsIndex.NoIndexNoFollow)]
-        public void MetaRobotsIndex_WithValue_ReturnsHtmlContainingValue(RobotsIndex robotsIndex)
+        public void MetaRobotsIndex_WithArgument_ReturnsHtmlContainingValue(RobotsIndex robotsIndex)
         {
             // Arrange
             var htmlHelper = HtmlHelperTestUtility.Get();
@@ -181,7 +203,7 @@ namespace AspNetMvcSeo.Tests
         [InlineData(RobotsIndex.IndexNoFollow)]
         [InlineData(RobotsIndex.NoIndexFollow)]
         [InlineData(RobotsIndex.NoIndexNoFollow)]
-        public void MetaRobotsIndex_EmptyWithValuesInSeoHelper_ReturnsHtmlContainingValue(RobotsIndex robotsIndex)
+        public void MetaRobotsIndex_EmptyArgumentWithValuesInSeoHelper_ReturnsHtmlContainingValue(RobotsIndex robotsIndex)
         {
             // Arrange
             var seoData = new Dictionary<object, object>();
@@ -205,11 +227,36 @@ namespace AspNetMvcSeo.Tests
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
-        public void MetaRobotsNoIndex_EmptyWithValueInSeoHelper_ReturnsHtmlContainingValue(bool metaRobotsNoIndex)
+        public void MetaRobotsNoIndex_EmptyArgumentWithMetaRobotsNoIndexInSeoHelper_ReturnsHtmlContainingValue(bool metaRobotsNoIndex)
         {
             // Arrange
             var seoData = new Dictionary<object, object>();
-            var seoHelper = new SeoHelper(seoData) { MetaRobotsNoIndex = true };
+            var seoHelper = new SeoHelper(seoData) { MetaRobotsNoIndex = metaRobotsNoIndex };
+            var htmlHelper = HtmlHelperTestUtility.Get(seoData);
+
+            // Act
+            var html = htmlHelper.MetaRobotsNoIndex();
+
+            // Assert
+            bool htmlContainsGoogleBot = html.Contains(HtmlHelperSeoExtensions.GoogleBotMetaName);
+            bool htmlContainsRobots = html.Contains(HtmlHelperSeoExtensions.RobotsMetaName);
+            var defaultRobotsNoIndex = RobotsIndexManager.GetMetaContent(RobotsIndexManager.DefaultRobotsNoIndex);
+            bool htmlContainsDefaultRobotsNoIndex = html.Contains(defaultRobotsNoIndex);
+
+            Assert.True(htmlContainsGoogleBot);
+            Assert.True(htmlContainsRobots);
+            Assert.True(htmlContainsDefaultRobotsNoIndex);
+        }
+
+        [Theory]
+        [InlineData(RobotsIndex.NoIndexFollow)]
+        [InlineData(RobotsIndex.NoIndexNoFollow)]
+        [InlineData(RobotsIndex.IndexNoFollow)]
+        public void MetaRobotsNoIndex_EmptyArgumentWithMetaRobotsIndexInSeoHelper_ReturnsHtmlContainingValue(RobotsIndex robotsIndex)
+        {
+            // Arrange
+            var seoData = new Dictionary<object, object>();
+            var seoHelper = new SeoHelper(seoData) { MetaRobotsIndex = robotsIndex };
             var htmlHelper = HtmlHelperTestUtility.Get(seoData);
 
             // Act
@@ -227,7 +274,7 @@ namespace AspNetMvcSeo.Tests
         }
 
         [Fact]
-        public void MetaRobotsNoIndex_WithValue_ReturnsHtmlContainingValue()
+        public void MetaRobotsNoIndex_WithArgument_ReturnsHtmlContainingValue()
         {
             // Arrange
             var htmlHelper = HtmlHelperTestUtility.Get();
@@ -247,7 +294,7 @@ namespace AspNetMvcSeo.Tests
         }
 
         [Fact]
-        public void Title_Empty_ReturnsNull()
+        public void Title_EmptyArgument_ReturnsNull()
         {
             // Arrange
             var htmlHelper = HtmlHelperTestUtility.Get();
@@ -260,7 +307,7 @@ namespace AspNetMvcSeo.Tests
         }
 
         [Fact]
-        public void Title_EmptyWithPageTitleInSeoHelper_ReturnsNotNull()
+        public void Title_EmptyArgumentWithPageTitleInSeoHelper_ReturnsNotNull()
         {
             // Arrange
             var seoData = new Dictionary<object, object>();
@@ -277,7 +324,7 @@ namespace AspNetMvcSeo.Tests
         }
 
         [Fact]
-        public void Title_EmptyWithSiteTitleInSeoHelper_ReturnsHtmlContainingValue()
+        public void Title_EmptyArgumentWithSiteTitleInSeoHelper_ReturnsHtmlContainingValue()
         {
             // Arrange
             var seoData = new Dictionary<object, object>();
@@ -294,7 +341,7 @@ namespace AspNetMvcSeo.Tests
         }
 
         [Fact]
-        public void Title_WithValue_ReturnsHtmlContainingValue()
+        public void Title_WithArgument_ReturnsHtmlContainingValue()
         {
             // Arrange
             var htmlHelper = HtmlHelperTestUtility.Get();
