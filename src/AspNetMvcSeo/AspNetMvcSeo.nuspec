@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
-    <id>$id$</id>
+    <id>AspNetMvcSeo</id>
     <version>$version$</version>
     <title>ASP.NET MVC SEO</title>
     <authors>Seb Nilsson</authors>
@@ -15,8 +15,4 @@
       <dependency id="Microsoft.AspNet.Mvc" version="5.2.0" />
     </dependencies>
   </metadata>
-
-  <!--<files>
-    <file src="src\AspNetMvcSeo\bin\$configuration$\AspNetMvcSeo.dll" target="lib\net45" />
-  </files>-->
 </package>
