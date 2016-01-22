@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
-    <id>AspNetMvcSeo</id>
-    <version>0.1.0</version>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>ASP.NET MVC SEO</title>
     <authors>Seb Nilsson</authors>
-    <description>SEO-helpers for ASP.NET MVC</description>
+    <description>Tools for SEO in ASP.NET MVC</description>
     <tags>aspnet asp.net mvc seo </tags>
-    
-	<dependencies>
-		<dependency id="Microsoft.AspNet.Mvc" version="5.2.0" />
-	</dependencies>
 
     <projectUrl>https://github.com/sebnilsson/AspNetMvcSeo</projectUrl>
     <licenseUrl>https://github.com/sebnilsson/AspNetMvcSeo/blob/master/LICENSE</licenseUrl>
+
+    <dependencies>
+      <dependency id="Microsoft.AspNet.Mvc" version="5.2.0" />
+    </dependencies>
   </metadata>
+
+  <!--<files>
+    <file src="src\AspNetMvcSeo\bin\$configuration$\AspNetMvcSeo.dll" target="lib\net45" />
+  </files>-->
 </package>

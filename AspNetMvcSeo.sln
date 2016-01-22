@@ -3,18 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{59B9B755-598A-475B-AFD0-53E84DF02B01}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetMvcSeo", "src\AspNetMvcSeo\AspNetMvcSeo.csproj", "{7BDFE64D-A52D-4419-9062-ED1C215335F6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{BA3D6C9F-1877-4379-9EE2-0DBA7BC1FAE0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetMvcSeo.Tests", "tests\AspNetMvcSeo.Tests\AspNetMvcSeo.Tests.csproj", "{699BCB38-9548-4329-BF78-4768AF472CF6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuget", "Nuget", "{71D22455-86B3-4E11-AD04-7585601B8837}"
+	ProjectSection(SolutionItems) = preProject
+		src\AspNetMvcSeo\AspNetMvcSeo.nuspec = src\AspNetMvcSeo\AspNetMvcSeo.nuspec
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
