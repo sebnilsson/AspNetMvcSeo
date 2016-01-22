@@ -3,11 +3,11 @@
 namespace AspNetMvcSeo
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = false)]
-    public class SeoTitleAttribute : SeoAttributeBase
+    public class SeoPageTitleAttribute : SeoAttributeBase
     {
         private readonly string pageTitle;
 
-        public SeoTitleAttribute(string pageTitle)
+        public SeoPageTitleAttribute(string pageTitle)
         {
             this.pageTitle = pageTitle;
         }

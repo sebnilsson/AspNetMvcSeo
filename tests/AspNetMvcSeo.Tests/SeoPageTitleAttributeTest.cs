@@ -2,13 +2,13 @@
 
 namespace AspNetMvcSeo.Tests
 {
-    public class SeoTitleAttributeTest
+    public class SeoPageTitleAttributeTest
     {
         [Fact]
         public void SetSeoValues_TestPageTitle_SetsPageTitle()
         {
             // Arrange
-            var attribute = new SeoTitleAttribute(TestData.TestPageTitle);
+            var attribute = new SeoPageTitleAttribute(TestData.TestPageTitle);
 
             var seo = SeoHelperTestUtility.Get();
 
@@ -23,7 +23,7 @@ namespace AspNetMvcSeo.Tests
         public void SetSeoValues_TestPageTitle_SetsPageTitleOnly()
         {
             // Arrange
-            var attribute = new SeoTitleAttribute(TestData.TestPageTitle);
+            var attribute = new SeoPageTitleAttribute(TestData.TestPageTitle);
 
             var seo = SeoHelperTestUtility.Get();
 
@@ -34,7 +34,7 @@ namespace AspNetMvcSeo.Tests
             Assert.Null(seo.CanonicalLink);
             Assert.Null(seo.MetaDescription);
             Assert.Null(seo.MetaKeywords);
-            Assert.Null(seo.MetaNoIndex);
+            Assert.Null(seo.MetaRobotsIndex);
             Assert.Null(seo.SiteTitle);
         }
     }

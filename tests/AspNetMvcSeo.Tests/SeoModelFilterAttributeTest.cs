@@ -52,20 +52,21 @@ namespace AspNetMvcSeo.Tests
         }
 
         [Theory]
-        [InlineData(true)]
-        [InlineData(false)]
-        public void PopulateSeoModelValues_ModelSetsMetaNoIndex_SetsSeoHelperValue(bool noIndex)
+        [InlineData(RobotsIndex.IndexNoFollow)]
+        [InlineData(RobotsIndex.NoIndexFollow)]
+        [InlineData(RobotsIndex.NoIndexNoFollow)]
+        public void PopulateSeoModelValues_ModelSetsMetaNoIndex_SetsSeoHelperValue(RobotsIndex robotsIndex)
         {
             // Arrange
             var attribute = new SeoModelFilterAttribute();
-            var seoModel = new MockSeoModel(x => x.MetaNoIndex = noIndex);
+            var seoModel = new MockSeoModel(x => x.MetaRobotsIndex = robotsIndex);
             var seoHelper = SeoHelperTestUtility.Get();
 
             // Act
             attribute.PopulateSeoModelValues(seoModel, seoHelper);
 
             // Assert
-            Assert.Equal(noIndex, seoHelper.MetaNoIndex);
+            Assert.Equal(robotsIndex, seoHelper.MetaRobotsIndex);
         }
 
         [Fact]

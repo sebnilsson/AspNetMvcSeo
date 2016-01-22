@@ -142,56 +142,108 @@ namespace AspNetMvcSeo.Tests
         }
 
         [Fact]
-        public void MetaNoIndex_Empty_ReturnsNull()
+        public void MetaRobotsIndex_Empty_ReturnsNull()
         {
             // Arrange
             var htmlHelper = HtmlHelperTestUtility.Get();
 
             // Act
-            var html = htmlHelper.MetaNoIndex();
+            var html = htmlHelper.MetaRobotsIndex();
 
             // Assert
             Assert.Null(html);
         }
 
         [Theory]
-        [InlineData(true)]
-        [InlineData(false)]
-        public void MetaNoIndex_EmptyWithValueInSeoHelper_ReturnsHtmlContainingValue(bool noIndex)
-        {
-            // Arrange
-            var seoData = new Dictionary<object, object>();
-            var seoHelper = new SeoHelper(seoData) { MetaNoIndex = noIndex };
-            var htmlHelper = HtmlHelperTestUtility.Get(seoData);
-
-            // Act
-            var html = htmlHelper.MetaNoIndex();
-
-            // Assert
-            bool htmlContainsGoogleBot = html.Contains(HtmlHelperSeoExtensions.GoogleBotMetaName);
-            bool htmlContainsRobots = html.Contains(HtmlHelperSeoExtensions.RobotsMetaName);
-
-            Assert.True(htmlContainsGoogleBot);
-            Assert.True(htmlContainsRobots);
-        }
-
-        [Theory]
-        [InlineData(true)]
-        [InlineData(false)]
-        public void MetaNoIndex_WithValue_ReturnsHtmlContainingValue(bool noIndex)
+        [InlineData(RobotsIndex.IndexNoFollow)]
+        [InlineData(RobotsIndex.NoIndexFollow)]
+        [InlineData(RobotsIndex.NoIndexNoFollow)]
+        public void MetaRobotsIndex_WithValue_ReturnsHtmlContainingValue(RobotsIndex robotsIndex)
         {
             // Arrange
             var htmlHelper = HtmlHelperTestUtility.Get();
 
             // Act
-            var html = htmlHelper.MetaNoIndex(noIndex: noIndex);
+            var html = htmlHelper.MetaRobotsIndex(robotsIndex);
 
             // Assert
             bool htmlContainsGoogleBot = html.Contains(HtmlHelperSeoExtensions.GoogleBotMetaName);
             bool htmlContainsRobots = html.Contains(HtmlHelperSeoExtensions.RobotsMetaName);
+            var metaContent = RobotsIndexManager.GetMetaContent(robotsIndex);
+            bool htmlContainsMetaContent = html.Contains(metaContent);
 
             Assert.True(htmlContainsGoogleBot);
             Assert.True(htmlContainsRobots);
+            Assert.True(htmlContainsMetaContent);
+        }
+
+        [Theory]
+        [InlineData(RobotsIndex.IndexNoFollow)]
+        [InlineData(RobotsIndex.NoIndexFollow)]
+        [InlineData(RobotsIndex.NoIndexNoFollow)]
+        public void MetaRobotsIndex_EmptyWithValuesInSeoHelper_ReturnsHtmlContainingValue(RobotsIndex robotsIndex)
+        {
+            // Arrange
+            var seoData = new Dictionary<object, object>();
+            var seoHelper = new SeoHelper(seoData) { MetaRobotsIndex = robotsIndex };
+            var htmlHelper = HtmlHelperTestUtility.Get(seoData);
+
+            // Act
+            var html = htmlHelper.MetaRobotsNoIndex();
+
+            // Assert
+            bool htmlContainsGoogleBot = html.Contains(HtmlHelperSeoExtensions.GoogleBotMetaName);
+            bool htmlContainsRobots = html.Contains(HtmlHelperSeoExtensions.RobotsMetaName);
+            var defaultRobotsNoIndex = RobotsIndexManager.GetMetaContent(RobotsIndexManager.DefaultRobotsNoIndex);
+            bool htmlContainsDefaultRobotsNoIndex = html.Contains(defaultRobotsNoIndex);
+
+            Assert.True(htmlContainsGoogleBot);
+            Assert.True(htmlContainsRobots);
+            Assert.True(htmlContainsDefaultRobotsNoIndex);
+        }
+
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void MetaRobotsNoIndex_EmptyWithValueInSeoHelper_ReturnsHtmlContainingValue(bool metaRobotsNoIndex)
+        {
+            // Arrange
+            var seoData = new Dictionary<object, object>();
+            var seoHelper = new SeoHelper(seoData) { MetaRobotsNoIndex = true };
+            var htmlHelper = HtmlHelperTestUtility.Get(seoData);
+
+            // Act
+            var html = htmlHelper.MetaRobotsNoIndex();
+
+            // Assert
+            bool htmlContainsGoogleBot = html.Contains(HtmlHelperSeoExtensions.GoogleBotMetaName);
+            bool htmlContainsRobots = html.Contains(HtmlHelperSeoExtensions.RobotsMetaName);
+            var defaultRobotsNoIndex = RobotsIndexManager.GetMetaContent(RobotsIndexManager.DefaultRobotsNoIndex);
+            bool htmlContainsDefaultRobotsNoIndex = html.Contains(defaultRobotsNoIndex);
+
+            Assert.True(htmlContainsGoogleBot);
+            Assert.True(htmlContainsRobots);
+            Assert.True(htmlContainsDefaultRobotsNoIndex);
+        }
+
+        [Fact]
+        public void MetaRobotsNoIndex_WithValue_ReturnsHtmlContainingValue()
+        {
+            // Arrange
+            var htmlHelper = HtmlHelperTestUtility.Get();
+
+            // Act
+            var html = htmlHelper.MetaRobotsNoIndex();
+
+            // Assert
+            bool htmlContainsGoogleBot = html.Contains(HtmlHelperSeoExtensions.GoogleBotMetaName);
+            bool htmlContainsRobots = html.Contains(HtmlHelperSeoExtensions.RobotsMetaName);
+            var defaultRobotsNoIndex = RobotsIndexManager.GetMetaContent(RobotsIndexManager.DefaultRobotsNoIndex);
+            bool htmlContainsDefaultRobotsNoIndex = html.Contains(defaultRobotsNoIndex);
+
+            Assert.True(htmlContainsGoogleBot);
+            Assert.True(htmlContainsRobots);
+            Assert.True(htmlContainsDefaultRobotsNoIndex);
         }
 
         [Fact]

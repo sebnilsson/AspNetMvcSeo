@@ -8,6 +8,14 @@ namespace AspNetMvcSeo
     {
         public const string GoogleBotMetaName = "GOOGLEBOT";
 
+        public const string MetaIndexIndex = "INDEX";
+
+        public const string MetaIndexNoIndex = "NOINDEX";
+
+        public const string MetaIndexFollow = "FOLLOW";
+
+        public const string MetaIndexNoFollow = "NOFOLLOW";
+
         public const string RobotsMetaName = "ROBOTS";
 
         public static IHtmlString CanonicalLink(this HtmlHelper helper, string canonicalLink = null)
@@ -68,7 +76,19 @@ namespace AspNetMvcSeo
             return helper.Meta("keywords", metaKeywords);
         }
 
-        public static IHtmlString MetaNoIndex(this HtmlHelper helper, bool? noIndex = null)
+        public static IHtmlString MetaRobotsNoIndex(this HtmlHelper helper)
+        {
+            if (helper == null)
+            {
+                throw new ArgumentNullException(nameof(helper));
+            }
+
+            var robotsIndex = RobotsIndexManager.GetForNoIndex(noIndex: true);
+
+            return helper.MetaRobotsIndex(robotsIndex);
+        }
+
+        public static IHtmlString MetaRobotsIndex(this HtmlHelper helper, RobotsIndex? robotsIndex = null)
         {
             if (helper == null)
             {
@@ -77,16 +97,16 @@ namespace AspNetMvcSeo
 
             var seo = new SeoHelper(helper);
 
-            noIndex = noIndex ?? seo.MetaNoIndex;
-            if (noIndex == null)
+            robotsIndex = robotsIndex ?? seo.MetaRobotsIndex;
+            if (robotsIndex == null)
             {
                 return null;
             }
 
-            string metaTagAttr = noIndex.Value ? "NOINDEX,FOLLOW" : "INDEX,FOLLOW";
+            string content = RobotsIndexManager.GetMetaContent(robotsIndex.Value);
 
-            var googleTag = Meta(helper, GoogleBotMetaName, metaTagAttr);
-            var robotsTag = Meta(helper, RobotsMetaName, metaTagAttr);
+            var googleTag = Meta(helper, GoogleBotMetaName, content);
+            var robotsTag = Meta(helper, RobotsMetaName, content);
 
             var combinedTags = $"{googleTag}{Environment.NewLine}{robotsTag}";
 

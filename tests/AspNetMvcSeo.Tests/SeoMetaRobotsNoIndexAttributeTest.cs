@@ -2,15 +2,13 @@
 
 namespace AspNetMvcSeo.Tests
 {
-    public class SeoMetaNoIndexAttributeTest
+    public class SeoMetaRobotsNoIndexAttributeTest
     {
-        [Theory]
-        [InlineData(true)]
-        [InlineData(false)]
-        public void SetSeoValues_NoIndexValue_MetaNoIndex(bool noIndex)
+        [Fact]
+        public void SetSeoValues_NoIndexValue_MetaNoIndex()
         {
             // Arrange
-            var attribute = new SeoMetaNoIndexAttribute(noIndex);
+            var attribute = new SeoMetaRobotsNoIndexAttribute();
 
             var seo = SeoHelperTestUtility.Get();
 
@@ -18,7 +16,8 @@ namespace AspNetMvcSeo.Tests
             attribute.SetSeoValues(seo);
 
             // Assert
-            Assert.Equal(noIndex, seo.MetaNoIndex);
+            Assert.True(seo.MetaRobotsNoIndex);
+            Assert.Equal(RobotsIndexManager.DefaultRobotsNoIndex, seo.MetaRobotsIndex);
         }
 
         [Theory]
@@ -27,7 +26,7 @@ namespace AspNetMvcSeo.Tests
         public void SetSeoValues_NoIndexValue_MetaNoIndexOnly(bool noIndex)
         {
             // Arrange
-            var attribute = new SeoMetaNoIndexAttribute(noIndex);
+            var attribute = new SeoMetaRobotsNoIndexAttribute();
 
             var seo = SeoHelperTestUtility.Get();
 

@@ -48,6 +48,32 @@ namespace AspNetMvcSeo.Tests
         }
 
         [Fact]
+        public void MetaRobotsNoIndex_SetTrue_MetaRobotsIndexEqualsDefaultRobotsNoIndex()
+        {
+            // Arrange
+            var seoHelper = SeoHelperTestUtility.Get();
+
+            // Act
+            seoHelper.MetaRobotsNoIndex = true;
+
+            // Assert
+            Assert.Equal(RobotsIndexManager.DefaultRobotsNoIndex, seoHelper.MetaRobotsIndex);
+        }
+
+        [Fact]
+        public void MetaRobotsNoIndex_SetFalse_MetaRobotsIndexIsNull()
+        {
+            // Arrange
+            var seoHelper = SeoHelperTestUtility.Get();
+
+            // Act
+            seoHelper.MetaRobotsNoIndex = false;
+
+            // Assert
+            Assert.Null(seoHelper.MetaRobotsIndex);
+        }
+
+        [Fact]
         public void PageTitle_SetWithDefaultSiteTitleAndSiteTitle_TitleContainsSiteTitleAndNotDefaultSiteTitle()
         {
             lock (SeoHelper.DefaultSiteTitleLock)

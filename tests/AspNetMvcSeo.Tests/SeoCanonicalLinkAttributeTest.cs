@@ -33,7 +33,7 @@ namespace AspNetMvcSeo.Tests
             // Assert
             Assert.Null(seo.MetaDescription);
             Assert.Null(seo.MetaKeywords);
-            Assert.Null(seo.MetaNoIndex);
+            Assert.Null(seo.MetaRobotsIndex);
             Assert.Null(seo.PageTitle);
             Assert.Null(seo.SiteTitle);
         }

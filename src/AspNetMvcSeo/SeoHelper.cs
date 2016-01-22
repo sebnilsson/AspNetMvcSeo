@@ -16,7 +16,7 @@ namespace AspNetMvcSeo
 
         private static readonly string MetaKeywordsKey = GetKey(nameof(MetaKeywords));
 
-        private static readonly string MetaNoIndexKey = GetKey(nameof(MetaNoIndex));
+        private static readonly string MetaRobotsIndexKey = GetKey(nameof(MetaRobotsIndex));
 
         private static readonly string PageTitleKey = GetKey(nameof(PageTitle));
 
@@ -71,20 +71,6 @@ namespace AspNetMvcSeo
             }
         }
 
-        public string SiteTitle
-        {
-            get
-            {
-                string siteTitle = this.seoData.TryGet<string>(SiteTitleKey);
-
-                return !string.IsNullOrWhiteSpace(siteTitle) ? siteTitle : DefaultSiteTitle;
-            }
-            set
-            {
-                this.seoData[SiteTitleKey] = value;
-            }
-        }
-
         public string CanonicalLink
         {
             get
@@ -121,15 +107,29 @@ namespace AspNetMvcSeo
             }
         }
 
-        public bool? MetaNoIndex
+        public RobotsIndex? MetaRobotsIndex
         {
             get
             {
-                return this.seoData.TryGet<bool?>(MetaNoIndexKey);
+                return this.seoData.TryGet<RobotsIndex?>(MetaRobotsIndexKey);
             }
             set
             {
-                this.seoData[MetaNoIndexKey] = value;
+                this.seoData[MetaRobotsIndexKey] = value;
+            }
+        }
+
+        public bool MetaRobotsNoIndex
+        {
+            get
+            {
+                return this.MetaRobotsIndex.HasValue;
+            }
+            set
+            {
+                var metaRobotsIndex = value ? RobotsIndexManager.DefaultRobotsNoIndex : (RobotsIndex?)null;
+
+                this.MetaRobotsIndex = metaRobotsIndex;
             }
         }
 
@@ -142,6 +142,20 @@ namespace AspNetMvcSeo
             set
             {
                 this.seoData[PageTitleKey] = value;
+            }
+        }
+
+        public string SiteTitle
+        {
+            get
+            {
+                string siteTitle = this.seoData.TryGet<string>(SiteTitleKey);
+
+                return !string.IsNullOrWhiteSpace(siteTitle) ? siteTitle : DefaultSiteTitle;
+            }
+            set
+            {
+                this.seoData[SiteTitleKey] = value;
             }
         }
 
