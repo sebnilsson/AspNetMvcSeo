@@ -30,7 +30,7 @@ namespace AspNetMvcSeo
                 return;
             }
 
-            var seoHelper = new SeoHelper(filterContext.HttpContext);
+            var seoHelper = new SeoHelper(filterContext.RequestContext);
 
             this.PopulateSeoModelValues(model, seoHelper);
         }

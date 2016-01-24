@@ -18,24 +18,24 @@ namespace AspNetMvcSeo
 
         public const string RobotsMetaName = "ROBOTS";
 
-        public static IHtmlString CanonicalLink(this HtmlHelper helper, string canonicalLink = null)
+        public static IHtmlString LinkCanonical(this HtmlHelper helper, string linkCanonical = null)
         {
             if (helper == null)
             {
                 throw new ArgumentNullException(nameof(helper));
             }
 
-            var seo = new SeoHelper(helper);
+            var seo = new SeoHelper(helper.ViewContext);
 
-            canonicalLink = canonicalLink ?? seo.CanonicalLink;
-            if (canonicalLink == null)
+            linkCanonical = linkCanonical ?? seo.LinkCanonical;
+            if (linkCanonical == null)
             {
                 return null;
             }
 
             var tag = new TagBuilder("link");
             tag.Attributes["rel"] = "canonical";
-            tag.Attributes["href"] = HttpUtility.HtmlAttributeEncode(canonicalLink);
+            tag.Attributes["href"] = HttpUtility.HtmlAttributeEncode(linkCanonical);
 
             return new HtmlString(tag.ToString(TagRenderMode.SelfClosing));
         }
@@ -47,7 +47,7 @@ namespace AspNetMvcSeo
                 throw new ArgumentNullException(nameof(helper));
             }
 
-            var seoHelper = new SeoHelper(helper);
+            var seoHelper = new SeoHelper(helper.ViewContext);
 
             metaDescription = metaDescription ?? seoHelper.MetaDescription;
             if (metaDescription == null)
@@ -65,7 +65,7 @@ namespace AspNetMvcSeo
                 throw new ArgumentNullException(nameof(helper));
             }
 
-            var seoHelper = new SeoHelper(helper);
+            var seoHelper = new SeoHelper(helper.ViewContext);
 
             metaKeywords = metaKeywords ?? seoHelper.MetaKeywords;
             if (metaKeywords == null)
@@ -95,7 +95,7 @@ namespace AspNetMvcSeo
                 throw new ArgumentNullException(nameof(helper));
             }
 
-            var seo = new SeoHelper(helper);
+            var seo = new SeoHelper(helper.ViewContext);
 
             robotsIndex = robotsIndex ?? seo.MetaRobotsIndex;
             if (robotsIndex == null)
@@ -143,7 +143,7 @@ namespace AspNetMvcSeo
                 throw new ArgumentNullException(nameof(helper));
             }
 
-            var seo = new SeoHelper(helper);
+            var seo = new SeoHelper(helper.ViewContext);
 
             title = title ?? seo.Title;
             if (title == null)

@@ -5,7 +5,7 @@ Tools for SEO in ASP.NET MVC.
 ## Attributes
 The following attributes are available for you Controller-actions:
 
-- `[SeoCanonicalLink]`: Sets a canonical link
+- `[SeoLinkCanonical]`: Sets a canonical link
 - `[SeoMetaDescription]`: Sets a meta-description
 - `[SeoMetaKeywords]`: Sets meta-keywords
 - `[SeoMetaIndex]`: Sets if a tag for index or no index
@@ -20,7 +20,7 @@ public ActionResult Edit()
     var model = GetModel();
     
     this.Seo.PageTitle = $"Edit {model.Name}";
-    this.Seo.CanonicalLink = thisthis.Url.Action("Action", "Controller", new { Id = model.Id });
+    this.Seo.LinkCanonical = this.Url.Action("Action", "Controller", new { Id = model.Id });
     this.Seo.MetaRobotsNoIndex = model.IsPrivate;
     
     return this.View(model);
@@ -38,7 +38,7 @@ Making your Views inherit from `SeoWebViewPage` enables you to do this in your V
 <head>
     @Html.Title()
     
-    @Html.CanonicalLink()
+    @Html.LinkCanonical()
     @Html.MetaDescription()
     @Html.MetaKeywords()
     @Html.MetaRobotsIndex()

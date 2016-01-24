@@ -9,8 +9,8 @@ namespace AspNetMvcSeo
         public override void InitHelpers()
         {
             base.InitHelpers();
-            
-            this.Seo = new SeoHelper(this.ViewContext.HttpContext);
+
+            this.Seo = new SeoHelper(this.ViewContext);
         }
 
         public override void Execute()

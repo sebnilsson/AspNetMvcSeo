@@ -31,7 +31,7 @@ namespace AspNetMvcSeo.Tests
             attribute.SetSeoValues(seo);
 
             // Assert
-            Assert.Null(seo.CanonicalLink);
+            Assert.Null(seo.LinkCanonical);
             Assert.Null(seo.MetaDescription);
             Assert.Null(seo.MetaRobotsIndex);
             Assert.Null(seo.PageTitle);

@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Web;
+﻿using System.IO;
 using System.Web.Mvc;
 using System.Web.Routing;
 
@@ -11,19 +8,16 @@ namespace AspNetMvcSeo.Tests
 {
     public static class HtmlHelperTestUtility
     {
-        public static HtmlHelper Get(IDictionary seoData = null)
+        public static HtmlHelper Get(RequestContext requestContext = null)
         {
-            seoData = seoData ?? new Dictionary<object, object>();
-
-            var httpContext = new Mock<HttpContextBase>();
-            httpContext.Setup(x => x.Items).Returns(seoData);
+            requestContext = requestContext ?? RequestContextTestUtility.Get();
 
             var controller = new Mock<ControllerBase>();
             var textWriter = new Mock<TextWriter>();
 
             var routeData = new RouteData();
             var tempData = new TempDataDictionary();
-            var controllerContext = new ControllerContext(httpContext.Object, routeData, controller.Object);
+            var controllerContext = new ControllerContext(requestContext.HttpContext, routeData, controller.Object);
 
             var viewData = new ViewDataDictionary();
 
@@ -35,7 +29,7 @@ namespace AspNetMvcSeo.Tests
                 viewData,
                 tempData,
                 textWriter.Object);
-            viewContext.Setup(x => x.HttpContext).Returns(httpContext.Object);
+            viewContext.Setup(x => x.HttpContext).Returns(requestContext.HttpContext);
 
             var viewDataContainer = new Mock<IViewDataContainer>();
             viewDataContainer.Setup(x => x.ViewData).Returns(viewData);

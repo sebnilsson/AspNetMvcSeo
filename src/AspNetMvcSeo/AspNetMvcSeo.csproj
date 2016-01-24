@@ -69,7 +69,7 @@
     <Compile Include="RobotsIndexManager.cs" />
     <Compile Include="RobotsIndex.cs" />
     <Compile Include="SeoAttributeBase.cs" />
-    <Compile Include="SeoCanonicalLinkAttribute.cs" />
+    <Compile Include="SeoLinkCanonicalAttribute.cs" />
     <Compile Include="SeoHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SeoMetaRobotsNoIndexAttribute.cs" />

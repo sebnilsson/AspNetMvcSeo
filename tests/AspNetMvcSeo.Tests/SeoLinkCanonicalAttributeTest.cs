@@ -2,13 +2,13 @@
 
 namespace AspNetMvcSeo.Tests
 {
-    public class SeoCanonicalLinkAttributeTest
+    public class SeoLinkCanonicalAttributeTest
     {
         [Fact]
-        public void SetSeoValues_TestCanonicalLink_SetsSeoHelperCanonicalLink()
+        public void SetSeoValues_TestLinkCanonical_SetsSeoHelperCanonicalLink()
         {
             // Arrange
-            var attribute = new SeoCanonicalLinkAttribute(TestData.TestCanonicalLink);
+            var attribute = new SeoLinkCanonicalAttribute(TestData.TestLinkCanonical);
 
             var seo = SeoHelperTestUtility.Get();
 
@@ -16,14 +16,14 @@ namespace AspNetMvcSeo.Tests
             attribute.SetSeoValues(seo);
 
             // Assert
-            Assert.Equal(TestData.TestCanonicalLink, seo.CanonicalLink);
+            Assert.Equal(TestData.TestLinkCanonical, seo.LinkCanonical);
         }
 
         [Fact]
-        public void SetSeoValues_TestCanonicalLink_SetsSeoHelperCanonicalLinkOnly()
+        public void SetSeoValues_TestLinkCanonical_SetsSeoHelperCanonicalLinkOnly()
         {
             // Arrange
-            var attribute = new SeoCanonicalLinkAttribute(TestData.TestPageTitle);
+            var attribute = new SeoLinkCanonicalAttribute(TestData.TestPageTitle);
 
             var seo = SeoHelperTestUtility.Get();
 

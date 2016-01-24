@@ -2,9 +2,9 @@
 {
     internal static class TestData
     {
-        public static readonly string TestCanonicalLink = $"Test{nameof(SeoHelper.CanonicalLink)}";
-
         public static readonly string TestDefaultSiteTitle = $"Test{nameof(SeoHelper.DefaultSiteTitle)}";
+
+        public static readonly string TestLinkCanonical = $"Test{nameof(SeoHelper.LinkCanonical)}";
 
         public static readonly string TestMetaDescription = $"Test{nameof(SeoHelper.MetaDescription)}";
 

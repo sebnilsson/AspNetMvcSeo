@@ -98,13 +98,14 @@
     <Compile Include="HtmlHelperTestUtility.cs" />
     <Compile Include="HtmlStringExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RequestContextTestUtility.cs" />
     <Compile Include="SeoHelperTest.cs" />
     <Compile Include="SeoMetaRobotsNoIndexAttributeTest.cs" />
     <Compile Include="SeoMetaRobotsIndexAttributeTest.cs" />
     <Compile Include="SeoMetaKeywordsAttributeTest.cs" />
     <Compile Include="SeoMetaDescriptionAttributeTest.cs" />
     <Compile Include="SeoHelperTestUtility.cs" />
-    <Compile Include="SeoCanonicalLinkAttributeTest.cs" />
+    <Compile Include="SeoLinkCanonicalAttributeTest.cs" />
     <Compile Include="SeoModelFilterAttributeTest.cs" />
     <Compile Include="SeoPageTitleAttributeTest.cs" />
     <Compile Include="TestData.cs" />

@@ -7,18 +7,18 @@ namespace AspNetMvcSeo.Tests
     public class SeoModelFilterAttributeTest
     {
         [Fact]
-        public void PopulateSeoModelValues_ModelSetsCanonicalLink_SetsSeoHelperValue()
+        public void PopulateSeoModelValues_ModelSetsLinkCanonical_SetsSeoHelperValue()
         {
             // Arrange
             var attribute = new SeoModelFilterAttribute();
-            var seoModel = new MockSeoModel(x => x.CanonicalLink = TestData.TestCanonicalLink);
+            var seoModel = new MockSeoModel(x => x.LinkCanonical = TestData.TestLinkCanonical);
             var seoHelper = SeoHelperTestUtility.Get();
 
             // Act
             attribute.PopulateSeoModelValues(seoModel, seoHelper);
 
             // Assert
-            Assert.Equal(TestData.TestCanonicalLink, seoHelper.CanonicalLink);
+            Assert.Equal(TestData.TestLinkCanonical, seoHelper.LinkCanonical);
         }
 
         [Fact]

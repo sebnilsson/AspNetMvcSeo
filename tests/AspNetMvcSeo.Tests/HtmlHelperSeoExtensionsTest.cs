@@ -7,46 +7,46 @@ namespace AspNetMvcSeo.Tests
     public class HtmlHelperSeoExtensionsTest
     {
         [Fact]
-        public void CanonicalLink_EmptyArgument_ReturnsNull()
+        public void LinkCanonical_EmptyArgument_ReturnsNull()
         {
             // Arrange
             var htmlHelper = HtmlHelperTestUtility.Get();
 
             // Act
-            var html = htmlHelper.CanonicalLink();
+            var html = htmlHelper.LinkCanonical();
 
             // Assert
             Assert.Null(html);
         }
 
         [Fact]
-        public void CanonicalLink_EmptyArgumentWithValueInSeoHelper_ReturnsHtmlContainingValue()
+        public void LinkCanonical_EmptyArgumentWithValueInSeoHelper_ReturnsHtmlContainingValue()
         {
             // Arrange
-            var seoData = new Dictionary<object, object>();
-            var seoHelper = new SeoHelper(seoData) { CanonicalLink = TestData.TestCanonicalLink };
-            var htmlHelper = HtmlHelperTestUtility.Get(seoData);
+            var requestContext = RequestContextTestUtility.Get();
+            var seoHelper = new SeoHelper(requestContext) { LinkCanonical = TestData.TestLinkCanonical };
+            var htmlHelper = HtmlHelperTestUtility.Get(requestContext);
 
             // Act
-            var html = htmlHelper.CanonicalLink();
+            var html = htmlHelper.LinkCanonical();
 
             // Assert
-            bool htmlContainsValue = html.Contains(TestData.TestCanonicalLink);
+            bool htmlContainsValue = html.Contains(TestData.TestLinkCanonical);
 
             Assert.True(htmlContainsValue);
         }
 
         [Fact]
-        public void CanonicalLink_WithArgument_ReturnsHtmlContainingValue()
+        public void LinkCanonical_WithArgument_ReturnsHtmlContainingValue()
         {
             // Arrange
             var htmlHelper = HtmlHelperTestUtility.Get();
 
             // Act
-            var html = htmlHelper.CanonicalLink(TestData.TestCanonicalLink);
+            var html = htmlHelper.LinkCanonical(TestData.TestLinkCanonical);
 
             // Assert
-            bool htmlContainsValue = html.Contains(TestData.TestCanonicalLink);
+            bool htmlContainsValue = html.Contains(TestData.TestLinkCanonical);
 
             Assert.True(htmlContainsValue);
         }
@@ -68,9 +68,9 @@ namespace AspNetMvcSeo.Tests
         public void MetaDescription_EmptyArgumentWithValueInSeoHelper_ReturnsHtmlContainingValue()
         {
             // Arrange
-            var seoData = new Dictionary<object, object>();
-            var seoHelper = new SeoHelper(seoData) { MetaDescription = TestData.TestMetaDescription };
-            var htmlHelper = HtmlHelperTestUtility.Get(seoData);
+            var requestContext = RequestContextTestUtility.Get();
+            var seoHelper = new SeoHelper(requestContext) { MetaDescription = TestData.TestMetaDescription };
+            var htmlHelper = HtmlHelperTestUtility.Get(requestContext);
 
             // Act
             var html = htmlHelper.MetaDescription();
@@ -113,9 +113,9 @@ namespace AspNetMvcSeo.Tests
         public void MetaKeywords_EmptyArgumentWithValueInSeoHelper_ReturnsHtmlContainingValue()
         {
             // Arrange
-            var seoData = new Dictionary<object, object>();
-            var seoHelper = new SeoHelper(seoData) { MetaKeywords = TestData.TestMetaKeywords };
-            var htmlHelper = HtmlHelperTestUtility.Get(seoData);
+            var requestContext = RequestContextTestUtility.Get();
+            var seoHelper = new SeoHelper(requestContext) { MetaKeywords = TestData.TestMetaKeywords };
+            var htmlHelper = HtmlHelperTestUtility.Get(requestContext);
 
             // Act
             var html = htmlHelper.MetaKeywords();
@@ -158,9 +158,9 @@ namespace AspNetMvcSeo.Tests
         public void MetaRobotsIndex_EmptyArgumentWithMetaRobotsNoIndexInSeoHelper_ReturnsHtmlContainingValue()
         {
             // Arrange
-            var seoData = new Dictionary<object, object>();
-            var seoHelper = new SeoHelper(seoData) { MetaRobotsNoIndex = true };
-            var htmlHelper = HtmlHelperTestUtility.Get(seoData);
+            var requestContext = RequestContextTestUtility.Get();
+            var seoHelper = new SeoHelper(requestContext) { MetaRobotsNoIndex = true };
+            var htmlHelper = HtmlHelperTestUtility.Get(requestContext);
 
             // Act
             var html = htmlHelper.MetaRobotsIndex();
@@ -203,12 +203,13 @@ namespace AspNetMvcSeo.Tests
         [InlineData(RobotsIndex.IndexNoFollow)]
         [InlineData(RobotsIndex.NoIndexFollow)]
         [InlineData(RobotsIndex.NoIndexNoFollow)]
-        public void MetaRobotsIndex_EmptyArgumentWithValuesInSeoHelper_ReturnsHtmlContainingValue(RobotsIndex robotsIndex)
+        public void MetaRobotsIndex_EmptyArgumentWithValuesInSeoHelper_ReturnsHtmlContainingValue(
+            RobotsIndex robotsIndex)
         {
             // Arrange
-            var seoData = new Dictionary<object, object>();
-            var seoHelper = new SeoHelper(seoData) { MetaRobotsIndex = robotsIndex };
-            var htmlHelper = HtmlHelperTestUtility.Get(seoData);
+            var requestContext = RequestContextTestUtility.Get();
+            var seoHelper = new SeoHelper(requestContext) { MetaRobotsIndex = robotsIndex };
+            var htmlHelper = HtmlHelperTestUtility.Get(requestContext);
 
             // Act
             var html = htmlHelper.MetaRobotsNoIndex();
@@ -227,12 +228,13 @@ namespace AspNetMvcSeo.Tests
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
-        public void MetaRobotsNoIndex_EmptyArgumentWithMetaRobotsNoIndexInSeoHelper_ReturnsHtmlContainingValue(bool metaRobotsNoIndex)
+        public void MetaRobotsNoIndex_EmptyArgumentWithMetaRobotsNoIndexInSeoHelper_ReturnsHtmlContainingValue(
+            bool metaRobotsNoIndex)
         {
             // Arrange
-            var seoData = new Dictionary<object, object>();
-            var seoHelper = new SeoHelper(seoData) { MetaRobotsNoIndex = metaRobotsNoIndex };
-            var htmlHelper = HtmlHelperTestUtility.Get(seoData);
+            var requestContext = RequestContextTestUtility.Get();
+            var seoHelper = new SeoHelper(requestContext) { MetaRobotsNoIndex = metaRobotsNoIndex };
+            var htmlHelper = HtmlHelperTestUtility.Get(requestContext);
 
             // Act
             var html = htmlHelper.MetaRobotsNoIndex();
@@ -252,12 +254,13 @@ namespace AspNetMvcSeo.Tests
         [InlineData(RobotsIndex.NoIndexFollow)]
         [InlineData(RobotsIndex.NoIndexNoFollow)]
         [InlineData(RobotsIndex.IndexNoFollow)]
-        public void MetaRobotsNoIndex_EmptyArgumentWithMetaRobotsIndexInSeoHelper_ReturnsHtmlContainingValue(RobotsIndex robotsIndex)
+        public void MetaRobotsNoIndex_EmptyArgumentWithMetaRobotsIndexInSeoHelper_ReturnsHtmlContainingValue(
+            RobotsIndex robotsIndex)
         {
             // Arrange
-            var seoData = new Dictionary<object, object>();
-            var seoHelper = new SeoHelper(seoData) { MetaRobotsIndex = robotsIndex };
-            var htmlHelper = HtmlHelperTestUtility.Get(seoData);
+            var requestContext = RequestContextTestUtility.Get();
+            var seoHelper = new SeoHelper(requestContext) { MetaRobotsIndex = robotsIndex };
+            var htmlHelper = HtmlHelperTestUtility.Get(requestContext);
 
             // Act
             var html = htmlHelper.MetaRobotsNoIndex();
@@ -310,9 +313,9 @@ namespace AspNetMvcSeo.Tests
         public void Title_EmptyArgumentWithPageTitleInSeoHelper_ReturnsNotNull()
         {
             // Arrange
-            var seoData = new Dictionary<object, object>();
-            var seoHelper = new SeoHelper(seoData) { PageTitle = TestData.TestPageTitle };
-            var htmlHelper = HtmlHelperTestUtility.Get(seoData);
+            var requestContext = RequestContextTestUtility.Get();
+            var seoHelper = new SeoHelper(requestContext) { PageTitle = TestData.TestPageTitle };
+            var htmlHelper = HtmlHelperTestUtility.Get(requestContext);
 
             // Act
             var html = htmlHelper.Title();
@@ -327,16 +330,16 @@ namespace AspNetMvcSeo.Tests
         public void Title_EmptyArgumentWithSiteTitleInSeoHelper_ReturnsHtmlContainingValue()
         {
             // Arrange
-            var seoData = new Dictionary<object, object>();
-            var seoHelper = new SeoHelper(seoData) { SiteTitle = TestData.TestSiteTitle };
-            var htmlHelper = HtmlHelperTestUtility.Get(seoData);
+            var requestContext = RequestContextTestUtility.Get();
+            var seoHelper = new SeoHelper(requestContext) { SiteTitle = TestData.TestSiteTitle };
+            var htmlHelper = HtmlHelperTestUtility.Get(requestContext);
 
             // Act
             var html = htmlHelper.Title();
 
             // Assert
             bool htmlContainsValue = html.Contains(TestData.TestSiteTitle);
-            
+
             Assert.True(htmlContainsValue);
         }
 

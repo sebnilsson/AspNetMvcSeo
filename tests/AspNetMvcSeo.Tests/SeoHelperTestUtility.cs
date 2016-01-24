@@ -1,14 +1,12 @@
-﻿using System.Collections.Generic;
-
-namespace AspNetMvcSeo.Tests
+﻿namespace AspNetMvcSeo.Tests
 {
     internal static class SeoHelperTestUtility
     {
         public static SeoHelper Get(string baseTitle = null)
         {
-            var seoData = new Dictionary<object, object>();
+            var requestContext = RequestContextTestUtility.Get();
 
-            var seo = new SeoHelper(seoData, baseTitle);
+            var seo = new SeoHelper(requestContext, baseTitle);
             return seo;
         }
     }
