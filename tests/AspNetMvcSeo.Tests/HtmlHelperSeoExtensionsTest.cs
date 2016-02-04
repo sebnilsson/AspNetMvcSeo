@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-using Xunit;
+﻿using Xunit;
 
 namespace AspNetMvcSeo.Tests
 {
@@ -24,7 +22,7 @@ namespace AspNetMvcSeo.Tests
         {
             // Arrange
             var requestContext = RequestContextTestUtility.Get();
-            var seoHelper = new SeoHelper(requestContext) { LinkCanonical = TestData.TestLinkCanonical };
+            var seoHelper = new SeoHelper(requestContext) { LinkCanonical = $"{TestData.TestLinkCanonical}" };
             var htmlHelper = HtmlHelperTestUtility.Get(requestContext);
 
             // Act
@@ -34,6 +32,27 @@ namespace AspNetMvcSeo.Tests
             bool htmlContainsValue = html.Contains(TestData.TestLinkCanonical);
 
             Assert.True(htmlContainsValue);
+        }
+
+        [Fact]
+        public void LinkCanonical_EmptyArgumentWithAppRelativeValueInSeoHelper_ReturnsHtmlContainingValueAndIsAbsolute()
+        {
+            // Arrange
+            var requestContext = RequestContextTestUtility.Get();
+            var seoHelper = new SeoHelper(requestContext) { LinkCanonical = $"~{TestData.TestLinkCanonical}" };
+            var htmlHelper = HtmlHelperTestUtility.Get(requestContext);
+
+            // Act
+            var html = htmlHelper.LinkCanonical();
+
+            // Assert
+            bool htmlContainsValue = html.Contains(TestData.TestLinkCanonical);
+            bool htmlContainsDomain = html.Contains(RequestContextTestUtility.Domain);
+            bool htmlContainsAppRelativeCharacter = html.Contains(UriUtility.AppRelativeUrlCharacter);
+
+            Assert.True(htmlContainsValue);
+            Assert.True(htmlContainsDomain);
+            Assert.False(htmlContainsAppRelativeCharacter);
         }
 
         [Fact]
@@ -177,10 +196,10 @@ namespace AspNetMvcSeo.Tests
         }
 
         [Theory]
-        [InlineData(RobotsIndex.IndexNoFollow)]
-        [InlineData(RobotsIndex.NoIndexFollow)]
-        [InlineData(RobotsIndex.NoIndexNoFollow)]
-        public void MetaRobotsIndex_WithArgument_ReturnsHtmlContainingValue(RobotsIndex robotsIndex)
+        [InlineData(RobotsIndex.IndexNoFollow, RobotsIndexManager.IndexNoFollow)]
+        [InlineData(RobotsIndex.NoIndexFollow, RobotsIndexManager.NoIndexFollow)]
+        [InlineData(RobotsIndex.NoIndexNoFollow, RobotsIndexManager.NoIndexNoFollow)]
+        public void MetaRobotsIndex_WithArgument_ReturnsHtmlContainingValue(RobotsIndex robotsIndex, string expectedContent)
         {
             // Arrange
             var htmlHelper = HtmlHelperTestUtility.Get();
@@ -193,10 +212,12 @@ namespace AspNetMvcSeo.Tests
             bool htmlContainsRobots = html.Contains(HtmlHelperSeoExtensions.RobotsMetaName);
             var metaContent = RobotsIndexManager.GetMetaContent(robotsIndex);
             bool htmlContainsMetaContent = html.Contains(metaContent);
+            bool htmlContainsExpectedContent = html.Contains(expectedContent);
 
             Assert.True(htmlContainsGoogleBot);
             Assert.True(htmlContainsRobots);
             Assert.True(htmlContainsMetaContent);
+            Assert.True(htmlContainsExpectedContent);
         }
 
         [Theory]

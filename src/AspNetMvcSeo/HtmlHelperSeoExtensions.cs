@@ -33,9 +33,18 @@ namespace AspNetMvcSeo
                 return null;
             }
 
+            string absoluteUrl = UriUtility.GetAbsoluteUrl(linkCanonical, helper.ViewContext.RequestContext);
+
+            var requestAbsoluteUri = helper.ViewContext.HttpContext.Request.Url?.AbsoluteUri;
+            if (string.IsNullOrWhiteSpace(requestAbsoluteUri)
+                || !Uri.IsWellFormedUriString(absoluteUrl, UriKind.Absolute))
+            {
+                return null;
+            }
+
             var tag = new TagBuilder("link");
             tag.Attributes["rel"] = "canonical";
-            tag.Attributes["href"] = HttpUtility.HtmlAttributeEncode(linkCanonical);
+            tag.Attributes["href"] = absoluteUrl;
 
             return new HtmlString(tag.ToString(TagRenderMode.SelfClosing));
         }
@@ -104,13 +113,7 @@ namespace AspNetMvcSeo
             }
 
             string content = RobotsIndexManager.GetMetaContent(robotsIndex.Value);
-
-            var googleTag = Meta(helper, GoogleBotMetaName, content);
-            var robotsTag = Meta(helper, RobotsMetaName, content);
-
-            var combinedTags = $"{googleTag}{Environment.NewLine}{robotsTag}";
-
-            return new HtmlString(combinedTags);
+            return Meta(helper, RobotsMetaName, content);
         }
 
         public static IHtmlString Meta(this HtmlHelper helper, string name, string content)

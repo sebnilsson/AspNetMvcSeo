@@ -4,7 +4,7 @@
     {
         public static readonly string TestDefaultSiteTitle = $"Test{nameof(SeoHelper.DefaultSiteTitle)}";
 
-        public static readonly string TestLinkCanonical = $"Test{nameof(SeoHelper.LinkCanonical)}";
+        public static readonly string TestLinkCanonical = $"/Test/{nameof(SeoHelper.LinkCanonical)}.html";
 
         public static readonly string TestMetaDescription = $"Test{nameof(SeoHelper.MetaDescription)}";
 

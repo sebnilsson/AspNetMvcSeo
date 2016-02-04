@@ -81,6 +81,7 @@
     <Compile Include="SeoController.cs" />
     <Compile Include="SeoWebViewPage.cs" />
     <Compile Include="SeoWebViewPageOfT.cs" />
+    <Compile Include="UriUtility.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="AspNetMvcSeo.nuspec" />

@@ -8,7 +8,7 @@ namespace AspNetMvcSeo.Tests
         [InlineData(RobotsIndex.IndexNoFollow)]
         [InlineData(RobotsIndex.NoIndexFollow)]
         [InlineData(RobotsIndex.NoIndexNoFollow)]
-        public void SetSeoValues_NoIndexValue_MetaNoIndex(RobotsIndex robotsIndex)
+        public void SetSeoValues_NoIndexValue_SetsMetaRobotsIndex(RobotsIndex robotsIndex)
         {
             // Arrange
             var attribute = new SeoMetaRobotsIndexAttribute(robotsIndex);
@@ -42,6 +42,21 @@ namespace AspNetMvcSeo.Tests
             Assert.Null(seo.MetaKeywords);
             Assert.Null(seo.PageTitle);
             Assert.Null(seo.SiteTitle);
+        }
+
+        [Fact]
+        public void SetSeoValues_Empty_SetsMetaRobotsIndexToNull()
+        {
+            // Arrange
+            var attribute = new SeoMetaRobotsIndexAttribute();
+
+            var seo = SeoHelperTestUtility.Get();
+
+            // Act
+            attribute.SetSeoValues(seo);
+
+            // Assert
+            Assert.Null(seo.MetaRobotsIndex);
         }
     }
 }

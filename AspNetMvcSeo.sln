@@ -17,6 +17,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetMvcSeo.Tests.Website", "tests\AspNetMvcSeo.Tests.Website\AspNetMvcSeo.Tests.Website.csproj", "{28DD09BE-49C6-4840-A69A-C46FD654D469}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,11 +33,16 @@ Global
 		{699BCB38-9548-4329-BF78-4768AF472CF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{699BCB38-9548-4329-BF78-4768AF472CF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{699BCB38-9548-4329-BF78-4768AF472CF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28DD09BE-49C6-4840-A69A-C46FD654D469}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28DD09BE-49C6-4840-A69A-C46FD654D469}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28DD09BE-49C6-4840-A69A-C46FD654D469}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28DD09BE-49C6-4840-A69A-C46FD654D469}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{699BCB38-9548-4329-BF78-4768AF472CF6} = {BA3D6C9F-1877-4379-9EE2-0DBA7BC1FAE0}
+		{28DD09BE-49C6-4840-A69A-C46FD654D469} = {BA3D6C9F-1877-4379-9EE2-0DBA7BC1FAE0}
 	EndGlobalSection
 EndGlobal

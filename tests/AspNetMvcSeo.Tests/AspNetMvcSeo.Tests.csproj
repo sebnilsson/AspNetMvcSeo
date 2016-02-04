@@ -109,6 +109,7 @@
     <Compile Include="SeoModelFilterAttributeTest.cs" />
     <Compile Include="SeoPageTitleAttributeTest.cs" />
     <Compile Include="TestData.cs" />
+    <Compile Include="UriUtilityTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

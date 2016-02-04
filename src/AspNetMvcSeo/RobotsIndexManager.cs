@@ -21,7 +21,7 @@ namespace AspNetMvcSeo
                 case RobotsIndex.NoIndexFollow:
                     return NoIndexFollow;
                 case RobotsIndex.NoIndexNoFollow:
-                    return NoIndexFollow;
+                    return NoIndexNoFollow;
                 default:
                     string message = $"No mapping found for {nameof(RobotsIndex)} value '{robotsIndex}'.";
                     throw new ArgumentOutOfRangeException(nameof(robotsIndex), message);

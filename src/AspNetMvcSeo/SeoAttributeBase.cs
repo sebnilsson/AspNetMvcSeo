@@ -5,7 +5,7 @@ namespace AspNetMvcSeo
 {
     public abstract class SeoAttributeBase : ActionFilterAttribute
     {
-        public override void OnResultExecuting(ResultExecutingContext filterContext)
+        public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             if (filterContext == null)
             {

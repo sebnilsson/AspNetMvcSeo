@@ -7,9 +7,14 @@ namespace AspNetMvcSeo
     {
         private readonly RobotsIndex? robotsIndex;
 
-        public SeoMetaRobotsIndexAttribute(RobotsIndex? robotsIndex = null)
+        public SeoMetaRobotsIndexAttribute(RobotsIndex robotsIndex)
         {
             this.robotsIndex = robotsIndex;
+        }
+
+        public SeoMetaRobotsIndexAttribute()
+        {
+            this.robotsIndex = null;
         }
 
         public override void SetSeoValues(SeoHelper seoHelper)

@@ -10,7 +10,29 @@ The following attributes are available for your Controller-actions:
 - `[SeoMetaKeywords]`: Sets the meta-keywords
 - `[SeoMetaIndex]`: Sets the value for a meta-tag which tells Robots how to index
 - `[SeoMetaRobotsNoIndex]`: Sets the value for a meta-tag which tells Robots not to index
-- `[SeoPageTitleAttribute]`: Sets the page-title
+- `[SeoPageTitle]`: Sets the page-title
+
+You can use the attributes like this:
+
+```
+[SeoPageTitle("Listing items")]
+[SeoMetaDescription("List of the company's product-items")]
+public ActionResult List()
+{
+    var list = GetList();
+    
+    if (list.Any())
+    {
+        Seo.PageTitle += $" (Total: {list.Count})";
+    }
+    else
+    {
+        Seo.MetaRobotsNoIndex = true;
+    }
+
+    return View(model);
+}
+```
 
 ## Controllers
 Making your Controllers inherit from `SeoController` gives you a `Seo`-object to use in your Controller-actions:
@@ -20,20 +42,20 @@ public ActionResult Edit()
 {
     var model = GetModel();
     
-    this.Seo.PageTitle = $"Edit {model.Name}";
-    this.Seo.LinkCanonical = this.Url.Action("Action", "Controller", new { Id = model.Id });
-    this.Seo.MetaRobotsNoIndex = model.IsPrivate;
+    Seo.PageTitle = $"Edit {model.Name}";
+    Seo.LinkCanonical = Url.Action("Action", "Controller", new { Id = model.Id });
+    Seo.MetaRobotsNoIndex = model.IsPrivate;
     
-    return this.View(model);
+    return View(model);
 }
 ```
 
 ## Views
-Making your Views inherit from `SeoWebViewPage` enables you to do this in your Views:
+You can access the `Seo`-property in the Views if you configure your `Web.config` for Views to use `SeoWebViewPage` as `pageBaseType`:
 
 ```
 @{
-    this.Seo.MetaRobotsNoIndex = true; // Always block Robots from indexing this View
+    Seo.MetaRobotsNoIndex = true; // Always block Robots from indexing this View
 }
 
 <head>
@@ -44,6 +66,17 @@ Making your Views inherit from `SeoWebViewPage` enables you to do this in your V
     @Html.MetaKeywords()
     @Html.MetaRobotsIndex()
 </head>
+```
+
+You configure it in the `~/Views/Web.config`-file like this:
+
+```
+<configuration>
+    <!-- ... -->
+    <system.web.webPages.razor>
+        <!-- ... -->
+        <pages pageBaseType="AspNetMvcSeo.SeoWebViewPage">
+    <!-- ... -->
 ```
 
 ## Model-binding
