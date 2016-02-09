@@ -6,8 +6,6 @@ namespace AspNetMvcSeo
 {
     public static class HtmlHelperSeoExtensions
     {
-        public const string GoogleBotMetaName = "GOOGLEBOT";
-
         public const string MetaIndexIndex = "INDEX";
 
         public const string MetaIndexNoIndex = "NOINDEX";

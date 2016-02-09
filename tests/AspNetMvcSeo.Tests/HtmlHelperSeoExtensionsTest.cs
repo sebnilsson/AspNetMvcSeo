@@ -185,12 +185,10 @@ namespace AspNetMvcSeo.Tests
             var html = htmlHelper.MetaRobotsIndex();
 
             // Assert
-            bool htmlContainsGoogleBot = html.Contains(HtmlHelperSeoExtensions.GoogleBotMetaName);
             bool htmlContainsRobots = html.Contains(HtmlHelperSeoExtensions.RobotsMetaName);
             var defaultRobotsNoIndex = RobotsIndexManager.GetMetaContent(RobotsIndexManager.DefaultRobotsNoIndex);
             bool htmlContainsMetaContent = html.Contains(defaultRobotsNoIndex);
-
-            Assert.True(htmlContainsGoogleBot);
+            
             Assert.True(htmlContainsRobots);
             Assert.True(htmlContainsMetaContent);
         }
@@ -208,13 +206,11 @@ namespace AspNetMvcSeo.Tests
             var html = htmlHelper.MetaRobotsIndex(robotsIndex);
 
             // Assert
-            bool htmlContainsGoogleBot = html.Contains(HtmlHelperSeoExtensions.GoogleBotMetaName);
             bool htmlContainsRobots = html.Contains(HtmlHelperSeoExtensions.RobotsMetaName);
             var metaContent = RobotsIndexManager.GetMetaContent(robotsIndex);
             bool htmlContainsMetaContent = html.Contains(metaContent);
             bool htmlContainsExpectedContent = html.Contains(expectedContent);
-
-            Assert.True(htmlContainsGoogleBot);
+            
             Assert.True(htmlContainsRobots);
             Assert.True(htmlContainsMetaContent);
             Assert.True(htmlContainsExpectedContent);
@@ -236,12 +232,10 @@ namespace AspNetMvcSeo.Tests
             var html = htmlHelper.MetaRobotsNoIndex();
 
             // Assert
-            bool htmlContainsGoogleBot = html.Contains(HtmlHelperSeoExtensions.GoogleBotMetaName);
             bool htmlContainsRobots = html.Contains(HtmlHelperSeoExtensions.RobotsMetaName);
             var defaultRobotsNoIndex = RobotsIndexManager.GetMetaContent(RobotsIndexManager.DefaultRobotsNoIndex);
             bool htmlContainsDefaultRobotsNoIndex = html.Contains(defaultRobotsNoIndex);
-
-            Assert.True(htmlContainsGoogleBot);
+            
             Assert.True(htmlContainsRobots);
             Assert.True(htmlContainsDefaultRobotsNoIndex);
         }
@@ -261,12 +255,10 @@ namespace AspNetMvcSeo.Tests
             var html = htmlHelper.MetaRobotsNoIndex();
 
             // Assert
-            bool htmlContainsGoogleBot = html.Contains(HtmlHelperSeoExtensions.GoogleBotMetaName);
             bool htmlContainsRobots = html.Contains(HtmlHelperSeoExtensions.RobotsMetaName);
             var defaultRobotsNoIndex = RobotsIndexManager.GetMetaContent(RobotsIndexManager.DefaultRobotsNoIndex);
             bool htmlContainsDefaultRobotsNoIndex = html.Contains(defaultRobotsNoIndex);
-
-            Assert.True(htmlContainsGoogleBot);
+            
             Assert.True(htmlContainsRobots);
             Assert.True(htmlContainsDefaultRobotsNoIndex);
         }
@@ -287,12 +279,10 @@ namespace AspNetMvcSeo.Tests
             var html = htmlHelper.MetaRobotsNoIndex();
 
             // Assert
-            bool htmlContainsGoogleBot = html.Contains(HtmlHelperSeoExtensions.GoogleBotMetaName);
             bool htmlContainsRobots = html.Contains(HtmlHelperSeoExtensions.RobotsMetaName);
             var defaultRobotsNoIndex = RobotsIndexManager.GetMetaContent(RobotsIndexManager.DefaultRobotsNoIndex);
             bool htmlContainsDefaultRobotsNoIndex = html.Contains(defaultRobotsNoIndex);
-
-            Assert.True(htmlContainsGoogleBot);
+            
             Assert.True(htmlContainsRobots);
             Assert.True(htmlContainsDefaultRobotsNoIndex);
         }
@@ -307,12 +297,10 @@ namespace AspNetMvcSeo.Tests
             var html = htmlHelper.MetaRobotsNoIndex();
 
             // Assert
-            bool htmlContainsGoogleBot = html.Contains(HtmlHelperSeoExtensions.GoogleBotMetaName);
             bool htmlContainsRobots = html.Contains(HtmlHelperSeoExtensions.RobotsMetaName);
             var defaultRobotsNoIndex = RobotsIndexManager.GetMetaContent(RobotsIndexManager.DefaultRobotsNoIndex);
             bool htmlContainsDefaultRobotsNoIndex = html.Contains(defaultRobotsNoIndex);
-
-            Assert.True(htmlContainsGoogleBot);
+            
             Assert.True(htmlContainsRobots);
             Assert.True(htmlContainsDefaultRobotsNoIndex);
         }
