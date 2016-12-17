@@ -21,7 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetMvcSeo.Tests.Website"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{11844B63-62B0-4BA8-9856-C424EB42C02F}"
 	ProjectSection(SolutionItems) = preProject
-		build\build.ps1 = build\build.ps1
+		build\build-nuget.ps1 = build\build-nuget.ps1
 	EndProjectSection
 EndProject
 Global
