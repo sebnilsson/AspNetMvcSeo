@@ -54,18 +54,18 @@ namespace AspNetMvcSeo
                 return null;
             }
 
-            string absoluteUrl = UriUtility.GetAbsoluteUrl(linkCanonical, helper.ViewContext.RequestContext);
+            string absoluteLinkCanonical = UriUtility.GetAbsoluteUrl(linkCanonical, helper.ViewContext.RequestContext);
 
             var requestAbsoluteUri = helper.ViewContext.HttpContext.Request.Url?.AbsoluteUri;
             if (string.IsNullOrWhiteSpace(requestAbsoluteUri)
-                || !Uri.IsWellFormedUriString(absoluteUrl, UriKind.Absolute))
+                || !Uri.IsWellFormedUriString(absoluteLinkCanonical, UriKind.Absolute))
             {
                 return null;
             }
 
             var tag = new TagBuilder("link");
             tag.Attributes["rel"] = "canonical";
-            tag.Attributes["href"] = absoluteUrl;
+            tag.Attributes["href"] = absoluteLinkCanonical;
 
             return new HtmlString(tag.ToString(TagRenderMode.SelfClosing));
         }

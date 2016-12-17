@@ -75,6 +75,21 @@ namespace AspNetMvcSeo.Tests
         }
 
         [Fact]
+        public void SeoLinkCanonical_WithArgument_ReturnsHtmlContainingAbsoluteUrl()
+        {
+            // Arrange
+            var htmlHelper = HtmlHelperTestFactory.Create();
+
+            // Act
+            var html = htmlHelper.SeoLinkCanonical(TestData.TestLinkCanonical);
+
+            // Assert
+            bool htmlContainsAbsoluteUrl = html.Contains(RequestContextTestFactory.Domain);
+
+            Assert.True(htmlContainsAbsoluteUrl);
+        }
+
+        [Fact]
         public void SeoMetaDescription_EmptyArgument_ReturnsNull()
         {
             // Arrange

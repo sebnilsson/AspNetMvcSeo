@@ -61,59 +61,40 @@ namespace AspNetMvcSeo.Tests
             Assert.Null(seoHelper.MetaRobotsIndex);
         }
 
-        // TODO: Change tests to reflect new structure
-        //[Fact]
-        //public void PageTitle_SetWithDefaultSiteTitleAndSiteTitle_TitleContainsSiteTitleAndNotDefaultSiteTitle()
-        //{
-        //    lock (SeoHelper.DefaultSiteTitleLock)
-        //    {
-        //        try
-        //        {
-        //            // Arrange
-        //            SeoHelper.DefaultSiteTitle = TestData.TestDefaultSiteTitle;
-        //            var seoHelper = SeoHelperTestFactory.Create();
+        [Fact]
+        public void SetTitle_TwiceWithSiteTitleAndPageTitle_SetsSiteTitleAndPageTitle()
+        {
+            // Arrange
+            var seoHelper = SeoHelperTestFactory.Create();
 
-        //            // Act
-        //            seoHelper.Title = TestData.TestTitle;
+            // Act
+            seoHelper.SetTitle(TestData.TestSiteTitle);
+            seoHelper.SetTitle(TestData.TestPageTitle);
 
-        //            // Assert
-        //            bool titleContainsSiteTitle = seoHelper.Title.Contains(TestData.TestTitle);
-        //            bool titleContainsDefaultSiteTitle = seoHelper.Title.Contains(TestData.TestDefaultSiteTitle);
+            // Assert
+            bool seoTitleContainsSiteTitle = seoHelper.Title.Contains(TestData.TestSiteTitle);
+            bool seoTitleContainsPageTitle = seoHelper.Title.Contains(TestData.TestPageTitle);
 
-        //            Assert.True(titleContainsSiteTitle);
-        //            Assert.False(titleContainsDefaultSiteTitle);
-        //        }
-        //        finally
-        //        {
-        //            SeoHelper.DefaultSiteTitle = null;
-        //        }
-        //    }
-        //}
+            Assert.True(seoTitleContainsSiteTitle);
+            Assert.True(seoTitleContainsPageTitle);
+        }
+        
+        [Fact]
+        public void SetTitle_TwiceWithSiteTitleAndPageTitleAndOverride_SetsPageTitle()
+        {
+            // Arrange
+            var seoHelper = SeoHelperTestFactory.Create();
 
-        //[Fact]
-        //public void PageTitle_SetWithDefaultSiteTitleAndWithoutSiteTitle_TitleContainsDefaultSiteTitle()
-        //{
-        //    lock (SeoHelper.DefaultSiteTitleLock)
-        //    {
-        //        try
-        //        {
-        //            // Arrange
-        //            SeoHelper.DefaultSiteTitle = TestData.TestDefaultSiteTitle;
-        //            var seoHelper = SeoHelperTestFactory.Create();
+            // Act
+            seoHelper.SetTitle(TestData.TestSiteTitle);
+            seoHelper.SetTitle(TestData.TestPageTitle, overrideTitle: true);
 
-        //            // Act
-        //            seoHelper.PageTitle = TestData.TestPageTitle;
+            // Assert
+            bool seoTitleContainsSiteTitle = seoHelper.Title.Contains(TestData.TestSiteTitle);
+            bool seoTitleContainsPageTitle = seoHelper.Title.Contains(TestData.TestPageTitle);
 
-        //            // Assert
-        //            bool titleContainsDefaultSiteTitle = seoHelper.Title.Contains(TestData.TestDefaultSiteTitle);
-
-        //            Assert.True(titleContainsDefaultSiteTitle);
-        //        }
-        //        finally
-        //        {
-        //            SeoHelper.DefaultSiteTitle = null;
-        //        }
-        //    }
-        //}
+            Assert.False(seoTitleContainsSiteTitle);
+            Assert.True(seoTitleContainsPageTitle);
+        }
     }
 }

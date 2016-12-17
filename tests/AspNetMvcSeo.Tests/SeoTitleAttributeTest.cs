@@ -38,7 +38,6 @@ namespace AspNetMvcSeo.Tests
             Assert.NotNull(seo.Title);
         }
 
-
         [Fact]
         public void OnHandleSeoValues_TwiceWithSiteTitleAndPageTitle_SetsSiteTitleAndPageTitle()
         {

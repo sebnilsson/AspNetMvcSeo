@@ -23,7 +23,8 @@ public ActionResult List()
     
     if (list.Any())
     {
-        Seo.PageTitle += $" (Total: {list.Count})";
+        Seo.Title += $" (Total: {list.Count})";
+        Seo.LinkCanonical = "~/pages/list.html";
     }
     else
     {
