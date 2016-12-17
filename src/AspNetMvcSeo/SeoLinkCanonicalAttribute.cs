@@ -12,7 +12,7 @@ namespace AspNetMvcSeo
             this.linkCanonical = linkCanonical;
         }
 
-        public override void SetSeoValues(SeoHelper seoHelper)
+        public override void OnHandleSeoValues(SeoHelper seoHelper)
         {
             seoHelper.LinkCanonical = this.linkCanonical;
         }

@@ -2,6 +2,6 @@
 {
     public interface ISeoModel
     {
-        void PopulateSeo(SeoHelper seoHelper);
+        void OnHandleSeoValues(SeoHelper seoHelper);
     }
 }

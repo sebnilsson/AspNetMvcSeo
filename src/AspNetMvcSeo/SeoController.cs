@@ -1,17 +1,23 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using System.Web.Routing;
 
 namespace AspNetMvcSeo
 {
-    public class SeoController : Controller
+    public abstract class SeoController : Controller
     {
         public SeoHelper Seo { get; set; }
 
         protected override void Initialize(RequestContext requestContext)
         {
+            if (requestContext == null)
+            {
+                throw new ArgumentNullException(nameof(requestContext));
+            }
+
             base.Initialize(requestContext);
 
-            this.Seo = new SeoHelper(this.ControllerContext.RequestContext);
+            this.Seo = new SeoHelper(requestContext);
         }
     }
 }

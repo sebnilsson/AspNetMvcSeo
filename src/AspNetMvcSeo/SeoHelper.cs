@@ -1,71 +1,46 @@
 ﻿using System;
 using System.Collections;
-using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using System.Web.Routing;
 
 namespace AspNetMvcSeo
 {
+    using System.Linq;
+
     public class SeoHelper
     {
-        private static readonly string LinkCanonicalKey = GetKey(nameof(LinkCanonical));
+        private const string DefaultTitleSeparator = " - ";
 
-        private static readonly Regex DoubleWhitespaceRegex = new Regex(@"\s{2,}");
+        private static readonly string LinkCanonicalKey = GetDataKey(nameof(LinkCanonical));
 
-        private static readonly string MetaDescriptionKey = GetKey(nameof(MetaDescription));
+        private static readonly string MetaDescriptionKey = GetDataKey(nameof(MetaDescription));
 
-        private static readonly string MetaKeywordsKey = GetKey(nameof(MetaKeywords));
+        private static readonly string MetaKeywordsKey = GetDataKey(nameof(MetaKeywords));
 
-        private static readonly string MetaRobotsIndexKey = GetKey(nameof(MetaRobotsIndex));
+        private static readonly string MetaRobotsIndexKey = GetDataKey(nameof(MetaRobotsIndex));
 
-        private static readonly string PageTitleKey = GetKey(nameof(PageTitle));
-
-        private static readonly string SiteTitleKey = GetKey(nameof(SiteTitle));
+        private static readonly string TitleKey = GetDataKey(nameof(Title));
 
         private readonly IDictionary seoData;
 
-        internal static readonly object DefaultSiteTitleLock = new object();
-
-        private static string defaultSiteTitle;
-
-        public SeoHelper(RequestContext requestContext, string siteTitle = null)
-        {
-            if (requestContext == null)
-            {
-                throw new ArgumentNullException(nameof(requestContext));
-            }
-
-            this.seoData = GetSeoData(requestContext);
-
-            this.RequestContext = requestContext;
-
-            if (siteTitle != null)
-            {
-                this.SiteTitle = siteTitle;
-            }
-        }
-
-        internal SeoHelper(ViewContext viewContext, string siteTitle = null)
-            : this(GetRequestContext(viewContext), siteTitle)
+        public SeoHelper(RequestContext requestContext)
+            : this(GetHttpContextItems(requestContext))
         {
         }
 
-        public static string DefaultSiteTitle
+        internal SeoHelper(ViewContext viewContext)
+            : this(GetRequestContext(viewContext))
         {
-            get
+        }
+
+        internal SeoHelper(IDictionary seoData)
+        {
+            if (seoData == null)
             {
-                lock (DefaultSiteTitleLock)
-                {
-                    return defaultSiteTitle;
-                }
+                throw new ArgumentNullException(nameof(seoData));
             }
-            set
-            {
-                lock (DefaultSiteTitleLock)
-                {
-                    defaultSiteTitle = value;
-                }
-            }
+
+            this.seoData = seoData;
         }
 
         public string LinkCanonical
@@ -130,52 +105,15 @@ namespace AspNetMvcSeo
             }
         }
 
-        public string PageTitle
-        {
-            get
-            {
-                return this.seoData.TryGet<string>(PageTitleKey);
-            }
-            set
-            {
-                this.seoData[PageTitleKey] = value;
-            }
-        }
-
-        public RequestContext RequestContext { get; }
-
-        public string SiteTitle
-        {
-            get
-            {
-                string siteTitle = this.seoData.TryGet<string>(SiteTitleKey);
-
-                return !string.IsNullOrWhiteSpace(siteTitle) ? siteTitle : DefaultSiteTitle;
-            }
-            set
-            {
-                this.seoData[SiteTitleKey] = value;
-            }
-        }
-
         public string Title
         {
             get
             {
-                bool hasTitle = !string.IsNullOrWhiteSpace(this.PageTitle);
-                bool hasBaseTitle = !string.IsNullOrWhiteSpace(this.SiteTitle);
-
-                if (hasTitle && hasBaseTitle)
-                {
-                    return $"{this.PageTitle.Trim()} - {this.SiteTitle.Trim()}";
-                }
-
-                if (hasTitle)
-                {
-                    return this.PageTitle;
-                }
-
-                return this.SiteTitle;
+                return this.seoData.TryGet<string>(TitleKey);
+            }
+            set
+            {
+                this.SetTitle(value);
             }
         }
 
@@ -186,27 +124,65 @@ namespace AspNetMvcSeo
                 throw new ArgumentNullException(nameof(addedKeyword));
             }
 
-            string combinedMetaKeywords = CombineTexts(this.MetaKeywords, addedKeyword);
+            string combinedMetaKeywords = CombineTexts(" ", this.MetaKeywords, addedKeyword);
 
             this.MetaKeywords = combinedMetaKeywords;
 
             return combinedMetaKeywords;
         }
 
-        private static string CombineTexts(string text1, string text2)
+        public void SetTitle(string value, bool overrideTitle = false, string separator = null)
         {
-            string combined = $"{text1} {text2}";
+            separator = separator ?? DefaultTitleSeparator;
 
-            combined = DoubleWhitespaceRegex.Replace(combined, " ");
+            if (overrideTitle)
+            {
+                this.seoData[TitleKey] = value;
+            }
+            else
+            {
+                string existingTitle = this.seoData.TryGet<string>(TitleKey);
 
-            combined = combined.Trim();
+                string combinedTitle = CombineTexts(separator, value, existingTitle);
+
+                this.seoData[TitleKey] = combinedTitle;
+            }
+        }
+
+        private static string CombineTexts(string separator, params string[] values)
+        {
+            var cleanedValues = values?.Select(x => x?.Trim()).Where(x => !string.IsNullOrWhiteSpace(x))
+                                ?? Enumerable.Empty<string>();
+
+            string combined = string.Join(separator, cleanedValues).Trim();
             return combined;
         }
 
-        private static string GetKey(string name)
+        private static string GetDataKey(string name)
         {
             string key = $"{nameof(AspNetMvcSeo)}.{nameof(SeoHelper)}.{name}";
             return key;
+        }
+
+        private static IDictionary GetHttpContextItems(RequestContext requestContext)
+        {
+            if (requestContext == null)
+            {
+                throw new ArgumentNullException(nameof(requestContext));
+            }
+            if (requestContext.HttpContext == null)
+            {
+                string message = $"{nameof(requestContext.HttpContext)} in {nameof(RequestContext)} cannot be null.";
+                throw new ArgumentOutOfRangeException(nameof(requestContext), message);
+            }
+            if (requestContext.HttpContext.Items == null)
+            {
+                string message =
+                    $"{nameof(requestContext.HttpContext.Items)} in {nameof(requestContext.HttpContext)} cannot be null.";
+                throw new ArgumentOutOfRangeException(nameof(requestContext), message);
+            }
+
+            return requestContext.HttpContext.Items;
         }
 
         private static RequestContext GetRequestContext(ViewContext viewContext)
@@ -215,26 +191,13 @@ namespace AspNetMvcSeo
             {
                 throw new ArgumentNullException(nameof(viewContext));
             }
+            if (viewContext.RequestContext == null)
+            {
+                string message = $"{nameof(viewContext.RequestContext)} in {nameof(ViewContext)} cannot be null.";
+                throw new ArgumentOutOfRangeException(nameof(viewContext), message);
+            }
 
             return viewContext.RequestContext;
-        }
-
-        private static IDictionary GetSeoData(RequestContext requestContext)
-        {
-            if (requestContext == null)
-            {
-                throw new ArgumentNullException(nameof(requestContext));
-            }
-            if (requestContext.HttpContext == null)
-            {
-                throw new ArgumentOutOfRangeException(nameof(requestContext));
-            }
-            if (requestContext.HttpContext.Items == null)
-            {
-                throw new ArgumentOutOfRangeException(nameof(requestContext));
-            }
-
-            return requestContext.HttpContext.Items;
         }
     }
 }

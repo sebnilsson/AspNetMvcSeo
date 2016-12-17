@@ -5,37 +5,36 @@ namespace AspNetMvcSeo.Tests
     public class SeoMetaDescriptionAttributeTest
     {
         [Fact]
-        public void SetSeoValues_TestMetaDescription_SetsMetaDescription()
+        public void OnHandleSeoValues_TestMetaDescription_SetsMetaDescription()
         {
             // Arrange
             var attribute = new SeoMetaDescriptionAttribute(TestData.TestMetaDescription);
 
-            var seo = SeoHelperTestUtility.Get();
+            var seo = SeoHelperTestFactory.Create();
 
             // Act
-            attribute.SetSeoValues(seo);
+            attribute.OnHandleSeoValues(seo);
 
             // Assert
             Assert.Equal(TestData.TestMetaDescription, seo.MetaDescription);
         }
 
         [Fact]
-        public void SetSeoValues_TestMetaDescription_SetsMetaDescriptionOnly()
+        public void OnHandleSeoValues_TestMetaDescription_SetsMetaDescriptionOnly()
         {
             // Arrange
-            var attribute = new SeoMetaDescriptionAttribute(TestData.TestPageTitle);
+            var attribute = new SeoMetaDescriptionAttribute(TestData.TestMetaDescription);
 
-            var seo = SeoHelperTestUtility.Get();
+            var seo = SeoHelperTestFactory.Create();
 
             // Act
-            attribute.SetSeoValues(seo);
+            attribute.OnHandleSeoValues(seo);
 
             // Assert
             Assert.Null(seo.LinkCanonical);
             Assert.Null(seo.MetaKeywords);
             Assert.Null(seo.MetaRobotsIndex);
-            Assert.Null(seo.PageTitle);
-            Assert.Null(seo.SiteTitle);
+            Assert.Null(seo.Title);
         }
     }
 }

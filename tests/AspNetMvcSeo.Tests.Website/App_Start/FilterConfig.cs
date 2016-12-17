@@ -8,6 +8,7 @@ namespace AspNetMvcSeo.Tests.Website
         {
             filters.Add(new HandleErrorAttribute());
             filters.Add(new SeoModelFilterAttribute());
+            filters.Add(new SeoTitleAttribute("ASP.NET MVC SEO Test-Website"));
         }
     }
 }

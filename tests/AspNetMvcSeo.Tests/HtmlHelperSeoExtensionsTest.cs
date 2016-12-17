@@ -5,28 +5,30 @@ namespace AspNetMvcSeo.Tests
     public class HtmlHelperSeoExtensionsTest
     {
         [Fact]
-        public void LinkCanonical_EmptyArgument_ReturnsNull()
+        public void SeoLinkCanonical_EmptyArgument_ReturnsNull()
         {
             // Arrange
-            var htmlHelper = HtmlHelperTestUtility.Get();
+            var htmlHelper = HtmlHelperTestFactory.Create();
 
             // Act
-            var html = htmlHelper.LinkCanonical();
+            var html = htmlHelper.SeoLinkCanonical();
 
             // Assert
             Assert.Null(html);
         }
 
         [Fact]
-        public void LinkCanonical_EmptyArgumentWithValueInSeoHelper_ReturnsHtmlContainingValue()
+        public void SeoLinkCanonical_EmptyArgumentWithValueInSeoHelper_ReturnsHtmlContainingValue()
         {
             // Arrange
-            var requestContext = RequestContextTestUtility.Get();
-            var seoHelper = new SeoHelper(requestContext) { LinkCanonical = $"{TestData.TestLinkCanonical}" };
-            var htmlHelper = HtmlHelperTestUtility.Get(requestContext);
+            var requestContext = RequestContextTestFactory.Create();
+            var htmlHelper = HtmlHelperTestFactory.Create(requestContext);
+            var seoHelper = SeoHelperTestFactory.Create(requestContext);
+
+            seoHelper.LinkCanonical = $"{TestData.TestLinkCanonical}";
 
             // Act
-            var html = htmlHelper.LinkCanonical();
+            var html = htmlHelper.SeoLinkCanonical();
 
             // Assert
             bool htmlContainsValue = html.Contains(TestData.TestLinkCanonical);
@@ -35,19 +37,21 @@ namespace AspNetMvcSeo.Tests
         }
 
         [Fact]
-        public void LinkCanonical_EmptyArgumentWithAppRelativeValueInSeoHelper_ReturnsHtmlContainingValueAndIsAbsolute()
+        public void SeoLinkCanonical_EmptyArgumentWithAppRelativeValueInSeoHelper_ReturnsHtmlContainingValueAndIsAbsolute()
         {
             // Arrange
-            var requestContext = RequestContextTestUtility.Get();
-            var seoHelper = new SeoHelper(requestContext) { LinkCanonical = $"~{TestData.TestLinkCanonical}" };
-            var htmlHelper = HtmlHelperTestUtility.Get(requestContext);
+            var requestContext = RequestContextTestFactory.Create();
+            var htmlHelper = HtmlHelperTestFactory.Create(requestContext);
+            var seoHelper = SeoHelperTestFactory.Create(requestContext);
+
+            seoHelper.LinkCanonical = $"~{TestData.TestLinkCanonical}";
 
             // Act
-            var html = htmlHelper.LinkCanonical();
+            var html = htmlHelper.SeoLinkCanonical();
 
             // Assert
             bool htmlContainsValue = html.Contains(TestData.TestLinkCanonical);
-            bool htmlContainsDomain = html.Contains(RequestContextTestUtility.Domain);
+            bool htmlContainsDomain = html.Contains(RequestContextTestFactory.Domain);
             bool htmlContainsAppRelativeCharacter = html.Contains(UriUtility.AppRelativeUrlCharacter);
 
             Assert.True(htmlContainsValue);
@@ -56,13 +60,13 @@ namespace AspNetMvcSeo.Tests
         }
 
         [Fact]
-        public void LinkCanonical_WithArgument_ReturnsHtmlContainingValue()
+        public void SeoLinkCanonical_WithArgument_ReturnsHtmlContainingValue()
         {
             // Arrange
-            var htmlHelper = HtmlHelperTestUtility.Get();
+            var htmlHelper = HtmlHelperTestFactory.Create();
 
             // Act
-            var html = htmlHelper.LinkCanonical(TestData.TestLinkCanonical);
+            var html = htmlHelper.SeoLinkCanonical(TestData.TestLinkCanonical);
 
             // Assert
             bool htmlContainsValue = html.Contains(TestData.TestLinkCanonical);
@@ -71,28 +75,30 @@ namespace AspNetMvcSeo.Tests
         }
 
         [Fact]
-        public void MetaDescription_EmptyArgument_ReturnsNull()
+        public void SeoMetaDescription_EmptyArgument_ReturnsNull()
         {
             // Arrange
-            var htmlHelper = HtmlHelperTestUtility.Get();
+            var htmlHelper = HtmlHelperTestFactory.Create();
 
             // Act
-            var html = htmlHelper.MetaDescription();
+            var html = htmlHelper.SeoMetaDescription();
 
             // Assert
             Assert.Null(html);
         }
 
         [Fact]
-        public void MetaDescription_EmptyArgumentWithValueInSeoHelper_ReturnsHtmlContainingValue()
+        public void SeoMetaDescription_EmptyArgumentWithValueInSeoHelper_ReturnsHtmlContainingValue()
         {
             // Arrange
-            var requestContext = RequestContextTestUtility.Get();
-            var seoHelper = new SeoHelper(requestContext) { MetaDescription = TestData.TestMetaDescription };
-            var htmlHelper = HtmlHelperTestUtility.Get(requestContext);
+            var requestContext = RequestContextTestFactory.Create();
+            var htmlHelper = HtmlHelperTestFactory.Create(requestContext);
+            var seoHelper = SeoHelperTestFactory.Create(requestContext);
+
+            seoHelper.MetaDescription = TestData.TestMetaDescription;
 
             // Act
-            var html = htmlHelper.MetaDescription();
+            var html = htmlHelper.SeoMetaDescription();
 
             // Assert
             bool htmlContainsValue = html.Contains(TestData.TestMetaDescription);
@@ -101,13 +107,13 @@ namespace AspNetMvcSeo.Tests
         }
 
         [Fact]
-        public void MetaDescription_WithArgument_ReturnsHtmlContainingValue()
+        public void SeoMetaDescription_WithArgument_ReturnsHtmlContainingValue()
         {
             // Arrange
-            var htmlHelper = HtmlHelperTestUtility.Get();
+            var htmlHelper = HtmlHelperTestFactory.Create();
 
             // Act
-            var html = htmlHelper.MetaDescription(TestData.TestMetaDescription);
+            var html = htmlHelper.SeoMetaDescription(TestData.TestMetaDescription);
 
             // Assert
             bool htmlContainsValue = html.Contains(TestData.TestMetaDescription);
@@ -116,28 +122,30 @@ namespace AspNetMvcSeo.Tests
         }
 
         [Fact]
-        public void MetaKeywords_EmptyArgument_ReturnsNull()
+        public void SeoMetaKeywords_EmptyArgument_ReturnsNull()
         {
             // Arrange
-            var htmlHelper = HtmlHelperTestUtility.Get();
+            var htmlHelper = HtmlHelperTestFactory.Create();
 
             // Act
-            var html = htmlHelper.MetaKeywords();
+            var html = htmlHelper.SeoMetaKeywords();
 
             // Assert
             Assert.Null(html);
         }
 
         [Fact]
-        public void MetaKeywords_EmptyArgumentWithValueInSeoHelper_ReturnsHtmlContainingValue()
+        public void SeoMetaKeywords_EmptyArgumentWithValueInSeoHelper_ReturnsHtmlContainingValue()
         {
             // Arrange
-            var requestContext = RequestContextTestUtility.Get();
-            var seoHelper = new SeoHelper(requestContext) { MetaKeywords = TestData.TestMetaKeywords };
-            var htmlHelper = HtmlHelperTestUtility.Get(requestContext);
+            var requestContext = RequestContextTestFactory.Create();
+            var htmlHelper = HtmlHelperTestFactory.Create(requestContext);
+            var seoHelper = SeoHelperTestFactory.Create(requestContext);
+
+            seoHelper.MetaKeywords = TestData.TestMetaKeywords;
 
             // Act
-            var html = htmlHelper.MetaKeywords();
+            var html = htmlHelper.SeoMetaKeywords();
 
             // Assert
             bool htmlContainsValue = html.Contains(TestData.TestMetaKeywords);
@@ -146,13 +154,13 @@ namespace AspNetMvcSeo.Tests
         }
 
         [Fact]
-        public void MetaKeywords_WithArgument_ReturnsHtmlContainingValue()
+        public void SeoMetaKeywords_WithArgument_ReturnsHtmlContainingValue()
         {
             // Arrange
-            var htmlHelper = HtmlHelperTestUtility.Get();
+            var htmlHelper = HtmlHelperTestFactory.Create();
 
             // Act
-            var html = htmlHelper.MetaKeywords(TestData.TestMetaKeywords);
+            var html = htmlHelper.SeoMetaKeywords(TestData.TestMetaKeywords);
 
             // Assert
             bool htmlContainsValue = html.Contains(TestData.TestMetaKeywords);
@@ -161,34 +169,36 @@ namespace AspNetMvcSeo.Tests
         }
 
         [Fact]
-        public void MetaRobotsIndex_EmptyArgument_ReturnsNull()
+        public void SeoMetaRobotsIndex_EmptyArgument_ReturnsNull()
         {
             // Arrange
-            var htmlHelper = HtmlHelperTestUtility.Get();
+            var htmlHelper = HtmlHelperTestFactory.Create();
 
             // Act
-            var html = htmlHelper.MetaRobotsIndex();
+            var html = htmlHelper.SeoMetaRobotsIndex();
 
             // Assert
             Assert.Null(html);
         }
 
         [Fact]
-        public void MetaRobotsIndex_EmptyArgumentWithMetaRobotsNoIndexInSeoHelper_ReturnsHtmlContainingValue()
+        public void SeoMetaRobotsIndex_EmptyArgumentWithMetaRobotsNoIndexInSeoHelper_ReturnsHtmlContainingValue()
         {
             // Arrange
-            var requestContext = RequestContextTestUtility.Get();
-            var seoHelper = new SeoHelper(requestContext) { MetaRobotsNoIndex = true };
-            var htmlHelper = HtmlHelperTestUtility.Get(requestContext);
+            var requestContext = RequestContextTestFactory.Create();
+            var htmlHelper = HtmlHelperTestFactory.Create(requestContext);
+            var seoHelper = SeoHelperTestFactory.Create(requestContext);
+
+            seoHelper.MetaRobotsNoIndex = true;
 
             // Act
-            var html = htmlHelper.MetaRobotsIndex();
+            var html = htmlHelper.SeoMetaRobotsIndex();
 
             // Assert
             bool htmlContainsRobots = html.Contains(HtmlHelperSeoExtensions.RobotsMetaName);
             var defaultRobotsNoIndex = RobotsIndexManager.GetMetaContent(RobotsIndexManager.DefaultRobotsNoIndex);
             bool htmlContainsMetaContent = html.Contains(defaultRobotsNoIndex);
-            
+
             Assert.True(htmlContainsRobots);
             Assert.True(htmlContainsMetaContent);
         }
@@ -197,20 +207,22 @@ namespace AspNetMvcSeo.Tests
         [InlineData(RobotsIndex.IndexNoFollow, RobotsIndexManager.IndexNoFollow)]
         [InlineData(RobotsIndex.NoIndexFollow, RobotsIndexManager.NoIndexFollow)]
         [InlineData(RobotsIndex.NoIndexNoFollow, RobotsIndexManager.NoIndexNoFollow)]
-        public void MetaRobotsIndex_WithArgument_ReturnsHtmlContainingValue(RobotsIndex robotsIndex, string expectedContent)
+        public void SeoMetaRobotsIndex_WithArgument_ReturnsHtmlContainingValue(
+            RobotsIndex robotsIndex,
+            string expectedContent)
         {
             // Arrange
-            var htmlHelper = HtmlHelperTestUtility.Get();
+            var htmlHelper = HtmlHelperTestFactory.Create();
 
             // Act
-            var html = htmlHelper.MetaRobotsIndex(robotsIndex);
+            var html = htmlHelper.SeoMetaRobotsIndex(robotsIndex);
 
             // Assert
             bool htmlContainsRobots = html.Contains(HtmlHelperSeoExtensions.RobotsMetaName);
             var metaContent = RobotsIndexManager.GetMetaContent(robotsIndex);
             bool htmlContainsMetaContent = html.Contains(metaContent);
             bool htmlContainsExpectedContent = html.Contains(expectedContent);
-            
+
             Assert.True(htmlContainsRobots);
             Assert.True(htmlContainsMetaContent);
             Assert.True(htmlContainsExpectedContent);
@@ -220,22 +232,24 @@ namespace AspNetMvcSeo.Tests
         [InlineData(RobotsIndex.IndexNoFollow)]
         [InlineData(RobotsIndex.NoIndexFollow)]
         [InlineData(RobotsIndex.NoIndexNoFollow)]
-        public void MetaRobotsIndex_EmptyArgumentWithValuesInSeoHelper_ReturnsHtmlContainingValue(
+        public void SeoMetaRobotsIndex_EmptyArgumentWithValuesInSeoHelper_ReturnsHtmlContainingValue(
             RobotsIndex robotsIndex)
         {
             // Arrange
-            var requestContext = RequestContextTestUtility.Get();
-            var seoHelper = new SeoHelper(requestContext) { MetaRobotsIndex = robotsIndex };
-            var htmlHelper = HtmlHelperTestUtility.Get(requestContext);
+            var requestContext = RequestContextTestFactory.Create();
+            var htmlHelper = HtmlHelperTestFactory.Create(requestContext);
+            var seoHelper = SeoHelperTestFactory.Create(requestContext);
+
+            seoHelper.MetaRobotsIndex = robotsIndex;
 
             // Act
-            var html = htmlHelper.MetaRobotsNoIndex();
+            var html = htmlHelper.SeoMetaRobotsNoIndex();
 
             // Assert
             bool htmlContainsRobots = html.Contains(HtmlHelperSeoExtensions.RobotsMetaName);
             var defaultRobotsNoIndex = RobotsIndexManager.GetMetaContent(RobotsIndexManager.DefaultRobotsNoIndex);
             bool htmlContainsDefaultRobotsNoIndex = html.Contains(defaultRobotsNoIndex);
-            
+
             Assert.True(htmlContainsRobots);
             Assert.True(htmlContainsDefaultRobotsNoIndex);
         }
@@ -243,22 +257,24 @@ namespace AspNetMvcSeo.Tests
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
-        public void MetaRobotsNoIndex_EmptyArgumentWithMetaRobotsNoIndexInSeoHelper_ReturnsHtmlContainingValue(
+        public void SeoMetaRobotsNoIndex_EmptyArgumentWithMetaRobotsNoIndexInSeoHelper_ReturnsHtmlContainingValue(
             bool metaRobotsNoIndex)
         {
             // Arrange
-            var requestContext = RequestContextTestUtility.Get();
-            var seoHelper = new SeoHelper(requestContext) { MetaRobotsNoIndex = metaRobotsNoIndex };
-            var htmlHelper = HtmlHelperTestUtility.Get(requestContext);
+            var requestContext = RequestContextTestFactory.Create();
+            var htmlHelper = HtmlHelperTestFactory.Create(requestContext);
+            var seoHelper = SeoHelperTestFactory.Create(requestContext);
+
+            seoHelper.MetaRobotsNoIndex = metaRobotsNoIndex;
 
             // Act
-            var html = htmlHelper.MetaRobotsNoIndex();
+            var html = htmlHelper.SeoMetaRobotsNoIndex();
 
             // Assert
             bool htmlContainsRobots = html.Contains(HtmlHelperSeoExtensions.RobotsMetaName);
             var defaultRobotsNoIndex = RobotsIndexManager.GetMetaContent(RobotsIndexManager.DefaultRobotsNoIndex);
             bool htmlContainsDefaultRobotsNoIndex = html.Contains(defaultRobotsNoIndex);
-            
+
             Assert.True(htmlContainsRobots);
             Assert.True(htmlContainsDefaultRobotsNoIndex);
         }
@@ -267,67 +283,71 @@ namespace AspNetMvcSeo.Tests
         [InlineData(RobotsIndex.NoIndexFollow)]
         [InlineData(RobotsIndex.NoIndexNoFollow)]
         [InlineData(RobotsIndex.IndexNoFollow)]
-        public void MetaRobotsNoIndex_EmptyArgumentWithMetaRobotsIndexInSeoHelper_ReturnsHtmlContainingValue(
+        public void SeoMetaRobotsNoIndex_EmptyArgumentWithMetaRobotsIndexInSeoHelper_ReturnsHtmlContainingValue(
             RobotsIndex robotsIndex)
         {
             // Arrange
-            var requestContext = RequestContextTestUtility.Get();
-            var seoHelper = new SeoHelper(requestContext) { MetaRobotsIndex = robotsIndex };
-            var htmlHelper = HtmlHelperTestUtility.Get(requestContext);
+            var requestContext = RequestContextTestFactory.Create();
+            var htmlHelper = HtmlHelperTestFactory.Create(requestContext);
+            var seoHelper = SeoHelperTestFactory.Create(requestContext);
+
+            seoHelper.MetaRobotsIndex = robotsIndex;
 
             // Act
-            var html = htmlHelper.MetaRobotsNoIndex();
+            var html = htmlHelper.SeoMetaRobotsNoIndex();
 
             // Assert
             bool htmlContainsRobots = html.Contains(HtmlHelperSeoExtensions.RobotsMetaName);
             var defaultRobotsNoIndex = RobotsIndexManager.GetMetaContent(RobotsIndexManager.DefaultRobotsNoIndex);
             bool htmlContainsDefaultRobotsNoIndex = html.Contains(defaultRobotsNoIndex);
-            
+
             Assert.True(htmlContainsRobots);
             Assert.True(htmlContainsDefaultRobotsNoIndex);
         }
 
         [Fact]
-        public void MetaRobotsNoIndex_WithArgument_ReturnsHtmlContainingValue()
+        public void SeoMetaRobotsNoIndex_WithArgument_ReturnsHtmlContainingValue()
         {
             // Arrange
-            var htmlHelper = HtmlHelperTestUtility.Get();
+            var htmlHelper = HtmlHelperTestFactory.Create();
 
             // Act
-            var html = htmlHelper.MetaRobotsNoIndex();
+            var html = htmlHelper.SeoMetaRobotsNoIndex();
 
             // Assert
             bool htmlContainsRobots = html.Contains(HtmlHelperSeoExtensions.RobotsMetaName);
             var defaultRobotsNoIndex = RobotsIndexManager.GetMetaContent(RobotsIndexManager.DefaultRobotsNoIndex);
             bool htmlContainsDefaultRobotsNoIndex = html.Contains(defaultRobotsNoIndex);
-            
+
             Assert.True(htmlContainsRobots);
             Assert.True(htmlContainsDefaultRobotsNoIndex);
         }
 
         [Fact]
-        public void Title_EmptyArgument_ReturnsNull()
+        public void SeoTitle_EmptyArgument_ReturnsNull()
         {
             // Arrange
-            var htmlHelper = HtmlHelperTestUtility.Get();
+            var htmlHelper = HtmlHelperTestFactory.Create();
 
             // Act
-            var html = htmlHelper.Title();
+            var html = htmlHelper.SeoTitle();
 
             // Assert
             Assert.Null(html);
         }
 
         [Fact]
-        public void Title_EmptyArgumentWithPageTitleInSeoHelper_ReturnsNotNull()
+        public void SeoTitle_EmptyArgumentWithTitleInSeoHelper_ReturnsNotNull()
         {
             // Arrange
-            var requestContext = RequestContextTestUtility.Get();
-            var seoHelper = new SeoHelper(requestContext) { PageTitle = TestData.TestPageTitle };
-            var htmlHelper = HtmlHelperTestUtility.Get(requestContext);
+            var requestContext = RequestContextTestFactory.Create();
+            var htmlHelper = HtmlHelperTestFactory.Create(requestContext);
+            var seoHelper = SeoHelperTestFactory.Create(requestContext);
+
+            seoHelper.Title = TestData.TestPageTitle;
 
             // Act
-            var html = htmlHelper.Title();
+            var html = htmlHelper.SeoTitle();
 
             // Assert
             bool htmlContainsValue = html.Contains(TestData.TestPageTitle);
@@ -336,15 +356,17 @@ namespace AspNetMvcSeo.Tests
         }
 
         [Fact]
-        public void Title_EmptyArgumentWithSiteTitleInSeoHelper_ReturnsHtmlContainingValue()
+        public void SeoTitle_EmptyArgumentWithSiteTitleInSeoHelper_ReturnsHtmlContainingValue()
         {
             // Arrange
-            var requestContext = RequestContextTestUtility.Get();
-            var seoHelper = new SeoHelper(requestContext) { SiteTitle = TestData.TestSiteTitle };
-            var htmlHelper = HtmlHelperTestUtility.Get(requestContext);
+            var requestContext = RequestContextTestFactory.Create();
+            var htmlHelper = HtmlHelperTestFactory.Create(requestContext);
+            var seoHelper = SeoHelperTestFactory.Create(requestContext);
+
+            seoHelper.Title = TestData.TestSiteTitle;
 
             // Act
-            var html = htmlHelper.Title();
+            var html = htmlHelper.SeoTitle();
 
             // Assert
             bool htmlContainsValue = html.Contains(TestData.TestSiteTitle);
@@ -353,13 +375,13 @@ namespace AspNetMvcSeo.Tests
         }
 
         [Fact]
-        public void Title_WithArgument_ReturnsHtmlContainingValue()
+        public void SeoTitle_WithArgument_ReturnsHtmlContainingValue()
         {
             // Arrange
-            var htmlHelper = HtmlHelperTestUtility.Get();
+            var htmlHelper = HtmlHelperTestFactory.Create();
 
             // Act
-            var html = htmlHelper.Title(TestData.TestPageTitle);
+            var html = htmlHelper.SeoTitle(TestData.TestPageTitle);
 
             // Assert
             bool htmlContainsValue = html.Contains(TestData.TestPageTitle);

@@ -8,15 +8,15 @@ namespace AspNetMvcSeo.Tests
         [InlineData(RobotsIndex.IndexNoFollow)]
         [InlineData(RobotsIndex.NoIndexFollow)]
         [InlineData(RobotsIndex.NoIndexNoFollow)]
-        public void SetSeoValues_NoIndexValue_SetsMetaRobotsIndex(RobotsIndex robotsIndex)
+        public void OnHandleSeoValues_NoIndexValue_SetsMetaRobotsIndex(RobotsIndex robotsIndex)
         {
             // Arrange
             var attribute = new SeoMetaRobotsIndexAttribute(robotsIndex);
 
-            var seo = SeoHelperTestUtility.Get();
+            var seo = SeoHelperTestFactory.Create();
 
             // Act
-            attribute.SetSeoValues(seo);
+            attribute.OnHandleSeoValues(seo);
 
             // Assert
             Assert.Equal(robotsIndex, seo.MetaRobotsIndex);
@@ -26,34 +26,33 @@ namespace AspNetMvcSeo.Tests
         [InlineData(RobotsIndex.IndexNoFollow)]
         [InlineData(RobotsIndex.NoIndexFollow)]
         [InlineData(RobotsIndex.NoIndexNoFollow)]
-        public void SetSeoValues_NoIndexValue_MetaNoIndexOnly(RobotsIndex robotsIndex)
+        public void OnHandleSeoValues_NoIndexValue_MetaNoIndexOnly(RobotsIndex robotsIndex)
         {
             // Arrange
             var attribute = new SeoMetaRobotsIndexAttribute(robotsIndex);
 
-            var seo = SeoHelperTestUtility.Get();
+            var seo = SeoHelperTestFactory.Create();
 
             // Act
-            attribute.SetSeoValues(seo);
+            attribute.OnHandleSeoValues(seo);
 
             // Assert
             Assert.Null(seo.LinkCanonical);
             Assert.Null(seo.MetaDescription);
             Assert.Null(seo.MetaKeywords);
-            Assert.Null(seo.PageTitle);
-            Assert.Null(seo.SiteTitle);
+            Assert.Null(seo.Title);
         }
 
         [Fact]
-        public void SetSeoValues_Empty_SetsMetaRobotsIndexToNull()
+        public void OnHandleSeoValues_Empty_SetsMetaRobotsIndexToNull()
         {
             // Arrange
             var attribute = new SeoMetaRobotsIndexAttribute();
 
-            var seo = SeoHelperTestUtility.Get();
+            var seo = SeoHelperTestFactory.Create();
 
             // Act
-            attribute.SetSeoValues(seo);
+            attribute.OnHandleSeoValues(seo);
 
             // Assert
             Assert.Null(seo.MetaRobotsIndex);

@@ -1,6 +1,6 @@
 ﻿namespace AspNetMvcSeo
 {
-    public class SeoWebViewPage : SeoWebViewPage<dynamic>
+    public class SeoWebViewPageBase : SeoWebViewPage<dynamic>
     {
     }
 }

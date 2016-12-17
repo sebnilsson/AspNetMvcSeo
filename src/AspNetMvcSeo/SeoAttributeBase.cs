@@ -14,9 +14,9 @@ namespace AspNetMvcSeo
 
             var seoHelper = new SeoHelper(filterContext.RequestContext);
 
-            this.SetSeoValues(seoHelper);
+            this.OnHandleSeoValues(seoHelper);
         }
 
-        public abstract void SetSeoValues(SeoHelper seoHelper);
+        public abstract void OnHandleSeoValues(SeoHelper seoHelper);
     }
 }

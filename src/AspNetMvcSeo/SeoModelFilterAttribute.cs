@@ -12,30 +12,28 @@ namespace AspNetMvcSeo
                 throw new ArgumentNullException(nameof(filterContext));
             }
 
-            base.OnResultExecuting(filterContext);
-
-            this.PopulateSeoModelValues(filterContext);
+            this.HandleSeoValues(filterContext);
         }
 
-        internal void PopulateSeoModelValues(ControllerContext filterContext)
+        internal void HandleSeoValues(ControllerContext filterContext)
         {
             if (filterContext == null)
             {
                 throw new ArgumentNullException(nameof(filterContext));
             }
 
-            var model = filterContext.Controller.ViewData.Model as ISeoModel;
-            if (model == null)
+            var seoModel = filterContext.Controller.ViewData.Model as ISeoModel;
+            if (seoModel == null)
             {
                 return;
             }
 
             var seoHelper = new SeoHelper(filterContext.RequestContext);
 
-            this.PopulateSeoModelValues(model, seoHelper);
+            this.HandleSeoValues(seoModel, seoHelper);
         }
 
-        internal void PopulateSeoModelValues(ISeoModel seoModel, SeoHelper seoHelper)
+        internal void HandleSeoValues(ISeoModel seoModel, SeoHelper seoHelper)
         {
             if (seoModel == null)
             {
@@ -46,7 +44,7 @@ namespace AspNetMvcSeo
                 throw new ArgumentNullException(nameof(seoHelper));
             }
 
-            seoModel.PopulateSeo(seoHelper);
+            seoModel.OnHandleSeoValues(seoHelper);
         }
     }
 }

@@ -12,10 +12,10 @@ namespace AspNetMvcSeo.Tests
             // Arrange
             var attribute = new SeoModelFilterAttribute();
             var seoModel = new MockSeoModel(x => x.LinkCanonical = TestData.TestLinkCanonical);
-            var seoHelper = SeoHelperTestUtility.Get();
+            var seoHelper = SeoHelperTestFactory.Create();
 
             // Act
-            attribute.PopulateSeoModelValues(seoModel, seoHelper);
+            attribute.HandleSeoValues(seoModel, seoHelper);
 
             // Assert
             Assert.Equal(TestData.TestLinkCanonical, seoHelper.LinkCanonical);
@@ -27,10 +27,10 @@ namespace AspNetMvcSeo.Tests
             // Arrange
             var attribute = new SeoModelFilterAttribute();
             var seoModel = new MockSeoModel(x => x.MetaDescription = TestData.TestMetaDescription);
-            var seoHelper = SeoHelperTestUtility.Get();
+            var seoHelper = SeoHelperTestFactory.Create();
 
             // Act
-            attribute.PopulateSeoModelValues(seoModel, seoHelper);
+            attribute.HandleSeoValues(seoModel, seoHelper);
 
             // Assert
             Assert.Equal(TestData.TestMetaDescription, seoHelper.MetaDescription);
@@ -42,10 +42,10 @@ namespace AspNetMvcSeo.Tests
             // Arrange
             var attribute = new SeoModelFilterAttribute();
             var seoModel = new MockSeoModel(x => x.MetaKeywords = TestData.TestMetaKeywords);
-            var seoHelper = SeoHelperTestUtility.Get();
+            var seoHelper = SeoHelperTestFactory.Create();
 
             // Act
-            attribute.PopulateSeoModelValues(seoModel, seoHelper);
+            attribute.HandleSeoValues(seoModel, seoHelper);
 
             // Assert
             Assert.Equal(TestData.TestMetaKeywords, seoHelper.MetaKeywords);
@@ -60,10 +60,10 @@ namespace AspNetMvcSeo.Tests
             // Arrange
             var attribute = new SeoModelFilterAttribute();
             var seoModel = new MockSeoModel(x => x.MetaRobotsIndex = robotsIndex);
-            var seoHelper = SeoHelperTestUtility.Get();
+            var seoHelper = SeoHelperTestFactory.Create();
 
             // Act
-            attribute.PopulateSeoModelValues(seoModel, seoHelper);
+            attribute.HandleSeoValues(seoModel, seoHelper);
 
             // Assert
             Assert.Equal(robotsIndex, seoHelper.MetaRobotsIndex);
@@ -74,14 +74,14 @@ namespace AspNetMvcSeo.Tests
         {
             // Arrange
             var attribute = new SeoModelFilterAttribute();
-            var seoModel = new MockSeoModel(x => x.PageTitle = TestData.TestPageTitle);
-            var seoHelper = SeoHelperTestUtility.Get();
+            var seoModel = new MockSeoModel(x => x.Title = TestData.TestPageTitle);
+            var seoHelper = SeoHelperTestFactory.Create();
 
             // Act
-            attribute.PopulateSeoModelValues(seoModel, seoHelper);
+            attribute.HandleSeoValues(seoModel, seoHelper);
 
             // Assert
-            Assert.Equal(TestData.TestPageTitle, seoHelper.PageTitle);
+            Assert.Equal(TestData.TestPageTitle, seoHelper.Title);
         }
 
         private class MockSeoModel : ISeoModel
@@ -93,7 +93,7 @@ namespace AspNetMvcSeo.Tests
                 this.populateSeoAction = populateSeoAction;
             }
 
-            public void PopulateSeo(SeoHelper seoHelper)
+            public void OnHandleSeoValues(SeoHelper seoHelper)
             {
                 this.populateSeoAction?.Invoke(seoHelper);
             }

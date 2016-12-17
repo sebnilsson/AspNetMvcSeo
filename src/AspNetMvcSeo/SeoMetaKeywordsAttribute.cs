@@ -16,7 +16,7 @@ namespace AspNetMvcSeo
 
         public bool Append { get; set; }
 
-        public override void SetSeoValues(SeoHelper seoHelper)
+        public override void OnHandleSeoValues(SeoHelper seoHelper)
         {
             if (this.Append)
             {

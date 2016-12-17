@@ -6,11 +6,11 @@ using Moq;
 
 namespace AspNetMvcSeo.Tests
 {
-    public static class HtmlHelperTestUtility
+    public static class HtmlHelperTestFactory
     {
-        public static HtmlHelper Get(RequestContext requestContext = null)
+        public static HtmlHelper Create(RequestContext requestContext = null)
         {
-            requestContext = requestContext ?? RequestContextTestUtility.Get();
+            requestContext = requestContext ?? RequestContextTestFactory.Create();
 
             var controller = new Mock<ControllerBase>();
             var textWriter = new Mock<TextWriter>();

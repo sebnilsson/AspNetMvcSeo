@@ -16,7 +16,30 @@ namespace AspNetMvcSeo
 
         public const string RobotsMetaName = "ROBOTS";
 
-        public static IHtmlString LinkCanonical(this HtmlHelper helper, string linkCanonical = null)
+        public static IHtmlString Meta(this HtmlHelper helper, string name, string content)
+        {
+            if (helper == null)
+            {
+                throw new ArgumentNullException(nameof(helper));
+            }
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+
+            if (content == null)
+            {
+                return null;
+            }
+
+            var tag = new TagBuilder("meta");
+            tag.Attributes["name"] = name;
+            tag.Attributes["content"] = content;
+
+            return new HtmlString(tag.ToString(TagRenderMode.SelfClosing));
+        }
+
+        public static IHtmlString SeoLinkCanonical(this HtmlHelper helper, string linkCanonical = null)
         {
             if (helper == null)
             {
@@ -47,7 +70,7 @@ namespace AspNetMvcSeo
             return new HtmlString(tag.ToString(TagRenderMode.SelfClosing));
         }
 
-        public static IHtmlString MetaDescription(this HtmlHelper helper, string metaDescription = null)
+        public static IHtmlString SeoMetaDescription(this HtmlHelper helper, string metaDescription = null)
         {
             if (helper == null)
             {
@@ -65,7 +88,7 @@ namespace AspNetMvcSeo
             return helper.Meta("description", metaDescription);
         }
 
-        public static IHtmlString MetaKeywords(this HtmlHelper helper, string metaKeywords = null)
+        public static IHtmlString SeoMetaKeywords(this HtmlHelper helper, string metaKeywords = null)
         {
             if (helper == null)
             {
@@ -83,19 +106,7 @@ namespace AspNetMvcSeo
             return helper.Meta("keywords", metaKeywords);
         }
 
-        public static IHtmlString MetaRobotsNoIndex(this HtmlHelper helper)
-        {
-            if (helper == null)
-            {
-                throw new ArgumentNullException(nameof(helper));
-            }
-
-            var robotsIndex = RobotsIndexManager.GetForNoIndex(noIndex: true);
-
-            return helper.MetaRobotsIndex(robotsIndex);
-        }
-
-        public static IHtmlString MetaRobotsIndex(this HtmlHelper helper, RobotsIndex? robotsIndex = null)
+        public static IHtmlString SeoMetaRobotsIndex(this HtmlHelper helper, RobotsIndex? robotsIndex = null)
         {
             if (helper == null)
             {
@@ -114,30 +125,19 @@ namespace AspNetMvcSeo
             return Meta(helper, RobotsMetaName, content);
         }
 
-        public static IHtmlString Meta(this HtmlHelper helper, string name, string content)
+        public static IHtmlString SeoMetaRobotsNoIndex(this HtmlHelper helper)
         {
             if (helper == null)
             {
                 throw new ArgumentNullException(nameof(helper));
             }
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                throw new ArgumentNullException(nameof(name));
-            }
 
-            if (content == null)
-            {
-                return null;
-            }
+            var robotsIndex = RobotsIndexManager.GetForNoIndex(noIndex: true);
 
-            var tag = new TagBuilder("meta");
-            tag.Attributes["name"] = name;
-            tag.Attributes["content"] = content;
-
-            return new HtmlString(tag.ToString(TagRenderMode.SelfClosing));
+            return helper.SeoMetaRobotsIndex(robotsIndex);
         }
 
-        public static IHtmlString Title(this HtmlHelper helper, string title = null)
+        public static IHtmlString SeoTitle(this HtmlHelper helper, string title = null)
         {
             if (helper == null)
             {

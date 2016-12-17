@@ -12,7 +12,7 @@ namespace AspNetMvcSeo
             this.metaDescription = metaDescription;
         }
 
-        public override void SetSeoValues(SeoHelper seoHelper)
+        public override void OnHandleSeoValues(SeoHelper seoHelper)
         {
             seoHelper.MetaDescription = this.metaDescription;
         }

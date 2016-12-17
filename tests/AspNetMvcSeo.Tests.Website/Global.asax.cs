@@ -11,8 +11,6 @@ namespace AspNetMvcSeo.Tests.Website
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
-
-            SeoHelper.DefaultSiteTitle = "ASP.NET MVC SEO Test-Website";
         }
     }
 }

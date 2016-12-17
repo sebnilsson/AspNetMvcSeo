@@ -17,7 +17,7 @@ namespace AspNetMvcSeo
             this.robotsIndex = null;
         }
 
-        public override void SetSeoValues(SeoHelper seoHelper)
+        public override void OnHandleSeoValues(SeoHelper seoHelper)
         {
             seoHelper.MetaRobotsIndex = this.robotsIndex;
         }

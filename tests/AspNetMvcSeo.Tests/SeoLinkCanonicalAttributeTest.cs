@@ -5,37 +5,36 @@ namespace AspNetMvcSeo.Tests
     public class SeoLinkCanonicalAttributeTest
     {
         [Fact]
-        public void SetSeoValues_TestLinkCanonical_SetsSeoHelperCanonicalLink()
+        public void OnHandleSeoValues_TestLinkCanonical_SetsSeoHelperCanonicalLink()
         {
             // Arrange
             var attribute = new SeoLinkCanonicalAttribute(TestData.TestLinkCanonical);
 
-            var seo = SeoHelperTestUtility.Get();
+            var seo = SeoHelperTestFactory.Create();
 
             // Act
-            attribute.SetSeoValues(seo);
+            attribute.OnHandleSeoValues(seo);
 
             // Assert
             Assert.Equal(TestData.TestLinkCanonical, seo.LinkCanonical);
         }
 
         [Fact]
-        public void SetSeoValues_TestLinkCanonical_SetsSeoHelperCanonicalLinkOnly()
+        public void OnHandleSeoValues_TestLinkCanonical_SetsSeoHelperCanonicalLinkOnly()
         {
             // Arrange
             var attribute = new SeoLinkCanonicalAttribute(TestData.TestPageTitle);
 
-            var seo = SeoHelperTestUtility.Get();
+            var seo = SeoHelperTestFactory.Create();
 
             // Act
-            attribute.SetSeoValues(seo);
+            attribute.OnHandleSeoValues(seo);
 
             // Assert
             Assert.Null(seo.MetaDescription);
             Assert.Null(seo.MetaKeywords);
             Assert.Null(seo.MetaRobotsIndex);
-            Assert.Null(seo.PageTitle);
-            Assert.Null(seo.SiteTitle);
+            Assert.Null(seo.Title);
         }
     }
 }

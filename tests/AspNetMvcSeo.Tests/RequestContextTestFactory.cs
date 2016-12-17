@@ -7,13 +7,13 @@ using Moq;
 
 namespace AspNetMvcSeo.Tests
 {
-    public static class RequestContextTestUtility
+    public static class RequestContextTestFactory
     {
         public const string Domain = "https://testdomain.co/";
 
         private static readonly Uri DomainUri = new Uri($"{Domain}testing/test.html?test1=123&test2=ABC");
 
-        public static RequestContext Get()
+        public static RequestContext Create()
         {
             var items = new Dictionary<object, object>();
             var request = new Mock<HttpRequestBase>();

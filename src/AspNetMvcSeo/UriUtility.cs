@@ -7,7 +7,7 @@ namespace AspNetMvcSeo
 {
     public static class UriUtility
     {
-        public const string AppRelativeUrlCharacter = "~";
+        internal const string AppRelativeUrlCharacter = "~";
 
         private const int UriNoPort = -1;
 
