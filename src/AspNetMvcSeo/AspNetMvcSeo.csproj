@@ -62,7 +62,6 @@
   <ItemGroup>
     <Compile Include="DictionaryExtensions.cs" />
     <Compile Include="HtmlHelperSeoExtensions.cs" />
-    <Compile Include="ISeoModel.cs" />
     <Compile Include="RobotsIndexManager.cs" />
     <Compile Include="RobotsIndex.cs" />
     <Compile Include="SeoAttributeBase.cs" />
@@ -72,16 +71,18 @@
     <Compile Include="SeoMetaRobotsNoIndexAttribute.cs" />
     <Compile Include="SeoMetaRobotsIndexAttribute.cs" />
     <Compile Include="SeoMetaKeywordsAttribute.cs" />
-    <Compile Include="SeoModelFilterAttribute.cs" />
     <Compile Include="SeoMetaDescriptionAttribute.cs" />
-    <Compile Include="SeoTitleAttribute.cs" />
+    <Compile Include="SeoTitleAttributeBase.cs" />
+    <Compile Include="SeoSectionTitleAttribute.cs" />
+    <Compile Include="SeoPageTitleAttribute.cs" />
     <Compile Include="SeoController.cs" />
     <Compile Include="SeoWebViewPage.cs" />
     <Compile Include="SeoWebViewPageOfT.cs" />
-    <Compile Include="UriUtility.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="AspNetMvcSeo.nuspec" />
+    <None Include="AspNetMvcSeo.nuspec">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

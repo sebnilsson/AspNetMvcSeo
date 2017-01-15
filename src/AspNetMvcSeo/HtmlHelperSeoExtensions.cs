@@ -6,39 +6,6 @@ namespace AspNetMvcSeo
 {
     public static class HtmlHelperSeoExtensions
     {
-        public const string MetaIndexIndex = "INDEX";
-
-        public const string MetaIndexNoIndex = "NOINDEX";
-
-        public const string MetaIndexFollow = "FOLLOW";
-
-        public const string MetaIndexNoFollow = "NOFOLLOW";
-
-        public const string RobotsMetaName = "ROBOTS";
-
-        public static IHtmlString Meta(this HtmlHelper helper, string name, string content)
-        {
-            if (helper == null)
-            {
-                throw new ArgumentNullException(nameof(helper));
-            }
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                throw new ArgumentNullException(nameof(name));
-            }
-
-            if (content == null)
-            {
-                return null;
-            }
-
-            var tag = new TagBuilder("meta");
-            tag.Attributes["name"] = name;
-            tag.Attributes["content"] = content;
-
-            return new HtmlString(tag.ToString(TagRenderMode.SelfClosing));
-        }
-
         public static IHtmlString SeoLinkCanonical(this HtmlHelper helper, string linkCanonical = null)
         {
             if (helper == null)
@@ -54,20 +21,51 @@ namespace AspNetMvcSeo
                 return null;
             }
 
-            string absoluteLinkCanonical = UriUtility.GetAbsoluteUrl(linkCanonical, helper.ViewContext.RequestContext);
+            var httpContext = helper.ViewContext.HttpContext;
 
-            var requestAbsoluteUri = helper.ViewContext.HttpContext.Request.Url?.AbsoluteUri;
-            if (string.IsNullOrWhiteSpace(requestAbsoluteUri)
-                || !Uri.IsWellFormedUriString(absoluteLinkCanonical, UriKind.Absolute))
+            var requestUri = httpContext.Request.Url;
+            if (requestUri == null)
+            {
+                return null;
+            }
+
+            string linkCanonicalHref = GetAbsoluteLinkCanonical(requestUri, linkCanonical, httpContext);
+
+            if (string.IsNullOrWhiteSpace(linkCanonicalHref)
+                || !Uri.IsWellFormedUriString(linkCanonicalHref, UriKind.Absolute))
             {
                 return null;
             }
 
             var tag = new TagBuilder("link");
             tag.Attributes["rel"] = "canonical";
-            tag.Attributes["href"] = absoluteLinkCanonical;
+            tag.Attributes["href"] = linkCanonicalHref;
 
             return new HtmlString(tag.ToString(TagRenderMode.SelfClosing));
+        }
+
+        private static string GetAbsoluteLinkCanonical(
+            Uri requestUri,
+            string linkCanonical,
+            HttpContextBase httpContext)
+        {
+            if (Uri.IsWellFormedUriString(linkCanonical, UriKind.Absolute))
+            {
+                return linkCanonical;
+            }
+
+            var appAbsolutePath = UrlHelper.GenerateContentUrl(linkCanonical, httpContext);
+
+            int queryIndex = appAbsolutePath.IndexOf('?');
+
+            string uriPath = (queryIndex >= 0) ? appAbsolutePath.Substring(0, queryIndex) : appAbsolutePath;
+            string uriQuery = (queryIndex >= 0) ? appAbsolutePath.Substring(queryIndex + 1) : string.Empty;
+            int uriPort = requestUri.Authority.Contains(":") ? requestUri.Port : -1;
+
+            var uri = new UriBuilder(requestUri.AbsoluteUri) { Path = uriPath, Query = uriQuery, Port = uriPort };
+
+            string absoluteLinkCanonicalUrl = uri.ToString();
+            return absoluteLinkCanonicalUrl;
         }
 
         public static IHtmlString SeoMetaDescription(this HtmlHelper helper, string metaDescription = null)
@@ -122,19 +120,7 @@ namespace AspNetMvcSeo
             }
 
             string content = RobotsIndexManager.GetMetaContent(robotsIndex.Value);
-            return Meta(helper, RobotsMetaName, content);
-        }
-
-        public static IHtmlString SeoMetaRobotsNoIndex(this HtmlHelper helper)
-        {
-            if (helper == null)
-            {
-                throw new ArgumentNullException(nameof(helper));
-            }
-
-            var robotsIndex = RobotsIndexManager.GetForNoIndex(noIndex: true);
-
-            return helper.SeoMetaRobotsIndex(robotsIndex);
+            return helper.Meta("robots", content);
         }
 
         public static IHtmlString SeoTitle(this HtmlHelper helper, string title = null)
@@ -155,6 +141,29 @@ namespace AspNetMvcSeo
             var tag = new TagBuilder("title") { InnerHtml = HttpUtility.HtmlEncode(title) };
 
             return new HtmlString(tag.ToString());
+        }
+
+        private static IHtmlString Meta(this HtmlHelper helper, string name, string content)
+        {
+            if (helper == null)
+            {
+                throw new ArgumentNullException(nameof(helper));
+            }
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+
+            if (content == null)
+            {
+                return null;
+            }
+
+            var tag = new TagBuilder("meta");
+            tag.Attributes["name"] = name;
+            tag.Attributes["content"] = content;
+
+            return new HtmlString(tag.ToString(TagRenderMode.SelfClosing));
         }
     }
 }

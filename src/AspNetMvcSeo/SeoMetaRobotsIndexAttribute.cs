@@ -14,7 +14,6 @@ namespace AspNetMvcSeo
 
         public SeoMetaRobotsIndexAttribute()
         {
-            this.robotsIndex = null;
         }
 
         public override void OnHandleSeoValues(SeoHelper seoHelper)

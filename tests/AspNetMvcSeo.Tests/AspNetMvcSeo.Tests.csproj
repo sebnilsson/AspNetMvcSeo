@@ -39,8 +39,8 @@
       <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Moq">
-      <HintPath>..\..\packages\Moq.4.5.29\lib\net45\Moq.dll</HintPath>
+    <Reference Include="Moq, Version=4.5.30.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Moq.4.5.30\lib\net45\Moq.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -107,10 +107,9 @@
     <Compile Include="SeoMetaDescriptionAttributeTest.cs" />
     <Compile Include="SeoHelperTestFactory.cs" />
     <Compile Include="SeoLinkCanonicalAttributeTest.cs" />
-    <Compile Include="SeoModelFilterAttributeTest.cs" />
-    <Compile Include="SeoTitleAttributeTest.cs" />
+    <Compile Include="SeoSectionTitleAttributeTest.cs" />
+    <Compile Include="SeoPageTitleAttributeTest.cs" />
     <Compile Include="TestData.cs" />
-    <Compile Include="UriUtilityTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -120,6 +119,9 @@
       <Project>{7bdfe64d-a52d-4419-9062-ed1c215335f6}</Project>
       <Name>AspNetMvcSeo</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

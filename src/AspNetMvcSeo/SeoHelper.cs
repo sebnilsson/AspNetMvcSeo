@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections;
+using System.Linq;
 using System.Web.Mvc;
 using System.Web.Routing;
 
 namespace AspNetMvcSeo
 {
-    using System.Linq;
-
     public class SeoHelper
     {
-        private const string DefaultTitleSeparator = " - ";
+        private const string DefaultTitleFormat = "{0} - {1}";
 
         private static readonly string LinkCanonicalKey = GetDataKey(nameof(LinkCanonical));
 
@@ -19,7 +18,11 @@ namespace AspNetMvcSeo
 
         private static readonly string MetaRobotsIndexKey = GetDataKey(nameof(MetaRobotsIndex));
 
-        private static readonly string TitleKey = GetDataKey(nameof(Title));
+        private static readonly string PageTitleKey = GetDataKey(nameof(PageTitle));
+
+        private static readonly string SectionTitleKey = GetDataKey(nameof(SectionTitle));
+
+        private static readonly string TitleFormatKey = GetDataKey(nameof(TitleFormat));
 
         private readonly IDictionary seoData;
 
@@ -95,7 +98,7 @@ namespace AspNetMvcSeo
         {
             get
             {
-                return this.MetaRobotsIndex.HasValue;
+                return (this.MetaRobotsIndex == RobotsIndexManager.DefaultRobotsNoIndex);
             }
             set
             {
@@ -105,15 +108,63 @@ namespace AspNetMvcSeo
             }
         }
 
+        public string PageTitle
+        {
+            get
+            {
+                return this.seoData.TryGet<string>(PageTitleKey);
+            }
+            set
+            {
+                this.seoData[PageTitleKey] = value;
+            }
+        }
+
+        public string SectionTitle
+        {
+            get
+            {
+                return this.seoData.TryGet<string>(SectionTitleKey);
+            }
+            set
+            {
+                this.seoData[SectionTitleKey] = value;
+            }
+        }
+
         public string Title
         {
             get
             {
-                return this.seoData.TryGet<string>(TitleKey);
+                bool isSectionTitleSet = !string.IsNullOrWhiteSpace(this.SectionTitle);
+                bool isPageTitleSet = !string.IsNullOrWhiteSpace(this.PageTitle);
+
+                if (isSectionTitleSet && isPageTitleSet)
+                {
+                    string title = string.Format(this.TitleFormat, this.PageTitle, this.SectionTitle);
+                    return title;
+                }
+
+                if (!isSectionTitleSet)
+                {
+                    return !string.IsNullOrWhiteSpace(this.PageTitle) ? this.PageTitle : null;
+                }
+
+                return !string.IsNullOrWhiteSpace(this.SectionTitle) ? this.SectionTitle : null;
+            }
+        }
+
+        public string TitleFormat
+        {
+            get
+            {
+                string format = this.seoData.TryGet<string>(TitleFormatKey);
+
+                return !string.IsNullOrWhiteSpace(format) ? format : DefaultTitleFormat;
             }
             set
             {
-                this.SetTitle(value);
+                this.seoData[TitleFormatKey] = value;
             }
         }
 
@@ -131,28 +182,16 @@ namespace AspNetMvcSeo
             return combinedMetaKeywords;
         }
 
-        public void SetTitle(string value, bool overrideTitle = false, string separator = null)
-        {
-            separator = separator ?? DefaultTitleSeparator;
-
-            if (overrideTitle)
-            {
-                this.seoData[TitleKey] = value;
-            }
-            else
-            {
-                string existingTitle = this.seoData.TryGet<string>(TitleKey);
-
-                string combinedTitle = CombineTexts(separator, value, existingTitle);
-
-                this.seoData[TitleKey] = combinedTitle;
-            }
-        }
-
         private static string CombineTexts(string separator, params string[] values)
         {
-            var cleanedValues = values?.Select(x => x?.Trim()).Where(x => !string.IsNullOrWhiteSpace(x))
-                                ?? Enumerable.Empty<string>();
+            var cleanedValues =
+                (values?.Select(x => x?.Trim()).Where(x => !string.IsNullOrWhiteSpace(x)) ?? Enumerable.Empty<string>())
+                    .ToList();
+
+            if (!cleanedValues.Any())
+            {
+                return null;
+            }
 
             string combined = string.Join(separator, cleanedValues).Trim();
             return combined;

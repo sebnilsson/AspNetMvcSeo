@@ -6,8 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("ASP.NET MVC SEO")]
-[assembly: AssemblyDescription("Tools for SEO in ASP.NET MVC")]
-[assembly: AssemblyCompany("Sebastian Nilsson")]
+[assembly: AssemblyDescription("Helpers for handling the SEO-data for a web-application")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
@@ -28,8 +27,8 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyVersion("0.5.0.0")] // .NET
-[assembly: AssemblyFileVersion("0.5.0.0")] // Windows Explorer
-[assembly: AssemblyInformationalVersion("0.5.0")] // Nuget
+[assembly: AssemblyVersion("0.8.0.0")] // .NET
+[assembly: AssemblyFileVersion("0.8.0.0")] // Windows Explorer
+[assembly: AssemblyInformationalVersion("0.8.0")] // Nuget
 
 [assembly: InternalsVisibleTo("AspNetMvcSeo.Tests")]

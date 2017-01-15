@@ -4,7 +4,7 @@
     <id>AspNetMvcSeo</id>
     <version>$version$</version>
     <title>ASP.NET MVC SEO</title>
-    <authors>$author$</authors>
+    <authors>Sebastian Nilsson</authors>
     <description>$description$</description>
     <tags>aspnet asp.net mvc seo</tags>
 
