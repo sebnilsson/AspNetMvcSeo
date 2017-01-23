@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Linq;
-using System.Web.Mvc;
-using System.Web.Routing;
+using System.Web;
 
 namespace AspNetMvcSeo
 {
@@ -26,17 +25,12 @@ namespace AspNetMvcSeo
 
         private readonly IDictionary seoData;
 
-        public SeoHelper(RequestContext requestContext)
-            : this(GetHttpContextItems(requestContext))
+        public SeoHelper(HttpContextBase httpContext)
+            : this(GetSeoData(httpContext))
         {
         }
 
-        internal SeoHelper(ViewContext viewContext)
-            : this(GetRequestContext(viewContext))
-        {
-        }
-
-        internal SeoHelper(IDictionary seoData)
+        public SeoHelper(IDictionary seoData)
         {
             if (seoData == null)
             {
@@ -203,40 +197,19 @@ namespace AspNetMvcSeo
             return key;
         }
 
-        private static IDictionary GetHttpContextItems(RequestContext requestContext)
+        private static IDictionary GetSeoData(HttpContextBase httpContext)
         {
-            if (requestContext == null)
+            if (httpContext == null)
             {
-                throw new ArgumentNullException(nameof(requestContext));
+                throw new ArgumentNullException(nameof(httpContext));
             }
-            if (requestContext.HttpContext == null)
+            if (httpContext.Items == null)
             {
-                string message = $"{nameof(requestContext.HttpContext)} in {nameof(RequestContext)} cannot be null.";
-                throw new ArgumentOutOfRangeException(nameof(requestContext), message);
-            }
-            if (requestContext.HttpContext.Items == null)
-            {
-                string message =
-                    $"{nameof(requestContext.HttpContext.Items)} in {nameof(requestContext.HttpContext)} cannot be null.";
-                throw new ArgumentOutOfRangeException(nameof(requestContext), message);
+                string message = $"{nameof(httpContext.Items)} in {nameof(HttpContextBase)} cannot be null.";
+                throw new ArgumentOutOfRangeException(nameof(httpContext), message);
             }
 
-            return requestContext.HttpContext.Items;
-        }
-
-        private static RequestContext GetRequestContext(ViewContext viewContext)
-        {
-            if (viewContext == null)
-            {
-                throw new ArgumentNullException(nameof(viewContext));
-            }
-            if (viewContext.RequestContext == null)
-            {
-                string message = $"{nameof(viewContext.RequestContext)} in {nameof(ViewContext)} cannot be null.";
-                throw new ArgumentOutOfRangeException(nameof(viewContext), message);
-            }
-
-            return viewContext.RequestContext;
+            return httpContext.Items;
         }
     }
 }

@@ -8,7 +8,7 @@ namespace AspNetMvcSeo.Tests
         {
             requestContext = requestContext ?? RequestContextTestFactory.Create();
 
-            var seo = new SeoHelper(requestContext);
+            var seo = new SeoHelper(requestContext.HttpContext);
             return seo;
         }
     }

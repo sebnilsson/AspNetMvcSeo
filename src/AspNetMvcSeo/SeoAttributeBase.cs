@@ -12,7 +12,7 @@ namespace AspNetMvcSeo
                 throw new ArgumentNullException(nameof(filterContext));
             }
 
-            var seoHelper = new SeoHelper(filterContext.RequestContext);
+            var seoHelper = new SeoHelper(filterContext.RequestContext.HttpContext);
 
             this.OnHandleSeoValues(seoHelper);
         }

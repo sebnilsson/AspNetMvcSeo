@@ -60,8 +60,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="WebPageBaseExtensions.cs" />
+    <Compile Include="ControllerBaseExtensions.cs" />
     <Compile Include="DictionaryExtensions.cs" />
     <Compile Include="HtmlHelperSeoExtensions.cs" />
+    <Compile Include="RequestContextExtensions.cs" />
     <Compile Include="RobotsIndexManager.cs" />
     <Compile Include="RobotsIndex.cs" />
     <Compile Include="SeoAttributeBase.cs" />

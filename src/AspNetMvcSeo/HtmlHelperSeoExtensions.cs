@@ -6,22 +6,22 @@ namespace AspNetMvcSeo
 {
     public static class HtmlHelperSeoExtensions
     {
-        public static IHtmlString SeoLinkCanonical(this HtmlHelper helper, string linkCanonical = null)
+        public static IHtmlString SeoLinkCanonical(this HtmlHelper htmlHelper, string linkCanonical = null)
         {
-            if (helper == null)
+            if (htmlHelper == null)
             {
-                throw new ArgumentNullException(nameof(helper));
+                throw new ArgumentNullException(nameof(htmlHelper));
             }
 
-            var seo = new SeoHelper(helper.ViewContext);
+            var seoHelper = GetSeoHelper(htmlHelper);
 
-            linkCanonical = linkCanonical ?? seo.LinkCanonical;
+            linkCanonical = linkCanonical ?? seoHelper.LinkCanonical;
             if (linkCanonical == null)
             {
                 return null;
             }
 
-            var httpContext = helper.ViewContext.HttpContext;
+            var httpContext = htmlHelper.ViewContext.HttpContext;
 
             var requestUri = httpContext.Request.Url;
             if (requestUri == null)
@@ -42,6 +42,81 @@ namespace AspNetMvcSeo
             tag.Attributes["href"] = linkCanonicalHref;
 
             return new HtmlString(tag.ToString(TagRenderMode.SelfClosing));
+        }
+
+        public static IHtmlString SeoMetaDescription(this HtmlHelper htmlHelper, string metaDescription = null)
+        {
+            if (htmlHelper == null)
+            {
+                throw new ArgumentNullException(nameof(htmlHelper));
+            }
+
+            var seoHelper = GetSeoHelper(htmlHelper);
+
+            metaDescription = metaDescription ?? seoHelper.MetaDescription;
+            if (metaDescription == null)
+            {
+                return null;
+            }
+
+            return htmlHelper.GetMetaTag("description", metaDescription);
+        }
+
+        public static IHtmlString SeoMetaKeywords(this HtmlHelper htmlHelper, string metaKeywords = null)
+        {
+            if (htmlHelper == null)
+            {
+                throw new ArgumentNullException(nameof(htmlHelper));
+            }
+
+            var seoHelper = GetSeoHelper(htmlHelper);
+
+            metaKeywords = metaKeywords ?? seoHelper.MetaKeywords;
+            if (metaKeywords == null)
+            {
+                return null;
+            }
+
+            return htmlHelper.GetMetaTag("keywords", metaKeywords);
+        }
+
+        public static IHtmlString SeoMetaRobotsIndex(this HtmlHelper htmlHelper, RobotsIndex? robotsIndex = null)
+        {
+            if (htmlHelper == null)
+            {
+                throw new ArgumentNullException(nameof(htmlHelper));
+            }
+
+            var seoHelper = GetSeoHelper(htmlHelper);
+
+            robotsIndex = robotsIndex ?? seoHelper.MetaRobotsIndex;
+            if (robotsIndex == null)
+            {
+                return null;
+            }
+
+            string content = RobotsIndexManager.GetMetaContent(robotsIndex.Value);
+            return htmlHelper.GetMetaTag("robots", content);
+        }
+
+        public static IHtmlString SeoTitle(this HtmlHelper htmlHelper, string title = null)
+        {
+            if (htmlHelper == null)
+            {
+                throw new ArgumentNullException(nameof(htmlHelper));
+            }
+
+            var seoHelper = GetSeoHelper(htmlHelper);
+
+            title = title ?? seoHelper.Title;
+            if (title == null)
+            {
+                return null;
+            }
+
+            var tag = new TagBuilder("title") { InnerHtml = HttpUtility.HtmlEncode(title) };
+
+            return new HtmlString(tag.ToString());
         }
 
         private static string GetAbsoluteLinkCanonical(
@@ -68,86 +143,23 @@ namespace AspNetMvcSeo
             return absoluteLinkCanonicalUrl;
         }
 
-        public static IHtmlString SeoMetaDescription(this HtmlHelper helper, string metaDescription = null)
+        private static SeoHelper GetSeoHelper(this HtmlHelper htmlHelper)
         {
-            if (helper == null)
+            if (htmlHelper.ViewContext == null)
             {
-                throw new ArgumentNullException(nameof(helper));
+                string message = $"{nameof(htmlHelper.ViewContext)} in {nameof(HtmlHelper)} cannot be null.";
+                throw new ArgumentOutOfRangeException(nameof(htmlHelper), message);
             }
 
-            var seoHelper = new SeoHelper(helper.ViewContext);
-
-            metaDescription = metaDescription ?? seoHelper.MetaDescription;
-            if (metaDescription == null)
-            {
-                return null;
-            }
-
-            return helper.Meta("description", metaDescription);
+            var seoHelper = new SeoHelper(htmlHelper.ViewContext.HttpContext);
+            return seoHelper;
         }
 
-        public static IHtmlString SeoMetaKeywords(this HtmlHelper helper, string metaKeywords = null)
+        private static IHtmlString GetMetaTag(this HtmlHelper htmlHelper, string name, string content)
         {
-            if (helper == null)
+            if (htmlHelper == null)
             {
-                throw new ArgumentNullException(nameof(helper));
-            }
-
-            var seoHelper = new SeoHelper(helper.ViewContext);
-
-            metaKeywords = metaKeywords ?? seoHelper.MetaKeywords;
-            if (metaKeywords == null)
-            {
-                return null;
-            }
-
-            return helper.Meta("keywords", metaKeywords);
-        }
-
-        public static IHtmlString SeoMetaRobotsIndex(this HtmlHelper helper, RobotsIndex? robotsIndex = null)
-        {
-            if (helper == null)
-            {
-                throw new ArgumentNullException(nameof(helper));
-            }
-
-            var seo = new SeoHelper(helper.ViewContext);
-
-            robotsIndex = robotsIndex ?? seo.MetaRobotsIndex;
-            if (robotsIndex == null)
-            {
-                return null;
-            }
-
-            string content = RobotsIndexManager.GetMetaContent(robotsIndex.Value);
-            return helper.Meta("robots", content);
-        }
-
-        public static IHtmlString SeoTitle(this HtmlHelper helper, string title = null)
-        {
-            if (helper == null)
-            {
-                throw new ArgumentNullException(nameof(helper));
-            }
-
-            var seo = new SeoHelper(helper.ViewContext);
-
-            title = title ?? seo.Title;
-            if (title == null)
-            {
-                return null;
-            }
-
-            var tag = new TagBuilder("title") { InnerHtml = HttpUtility.HtmlEncode(title) };
-
-            return new HtmlString(tag.ToString());
-        }
-
-        private static IHtmlString Meta(this HtmlHelper helper, string name, string content)
-        {
-            if (helper == null)
-            {
-                throw new ArgumentNullException(nameof(helper));
+                throw new ArgumentNullException(nameof(htmlHelper));
             }
             if (string.IsNullOrWhiteSpace(name))
             {

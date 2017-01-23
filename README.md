@@ -6,7 +6,7 @@ Provides a `SeoHelper`-class which is easily accessible in Controller-Actions, V
 
 ## SeoHelper
 
-The `SeoHelper`-class exposes multiple properties to get or set multiple SEO-related data.
+The `SeoHelper`-class exposes multiple properties to get or set multiple SEO-related data:
 
 - `LinkCanonical`: Gets or sets the canonical link for a web-page. Can be set as absolute URL (`https://example.com/section/page.html`), 
 as a relative URL (`/section/page.html`) or using ASP.NET's app-relative URL-format (`~/section.page.html`).
@@ -24,26 +24,60 @@ as a relative URL (`/section/page.html`) or using ASP.NET's app-relative URL-for
 - `TitleFormat`: Gets or sets the format for the title. Default value is `{0} - {1}`,
 where `{0}` is the value from `PageTitle` and `{1}` is the value from `SectionTitle`.
 
-### Access in Controller-Actions
+### Accessing the SeoHelper-class
 
-To easily access the `SeoHelper`-object inside Controllers, it has to inherit from `SeoController`, which makes a `Seo`-object available:
+The class can be accessed through **manual instantiation, extension-methods or class-inheritence** for `Controller` and `View`.
+
+**Manually instantiate** using `HttpContext` and its `.Items`-property to transport SEO-data,
+or use the **extension-method** `GetSeoHelper` exposed for the `ControllerBase` and `ViewPageBase`:
 
 ```
+// Controller
 public ActionResult Edit()
 {
     var model = GetModel();
+
+    var seoHelper = new SeoHelper(HttpContext); // or GetSeoHelper()
     
-    Seo.PageTitle = $"Edit {model.Name}";
-    Seo.LinkCanonical = Url.Action("Action", "Controller", new { Id = model.Id });
-    Seo.MetaRobotsNoIndex = model.IsPrivate;
+    seoHelper.PageTitle = $"Edit {model.Name}";
+    seoHelper.LinkCanonical = Url.Action("Action", "Controller", new { Id = model.Id });
+    seoHelper.MetaRobotsNoIndex = model.IsPrivate;
     
     return View(model);
 }
 ```
 
-### Access in Views
+```
+// View
+@{
+    var seoHelper = new SeoHelper(Context); // or GetSeoHelper()
 
-To easily access the `SeoHelper`-object inside Views, the configuration for `pageBaseType` must be set to `SeoWebViewPage` in the `Web.config`
+    seoHelper.MetaRobotsNoIndex = true;
+}
+```
+
+If you make your `Controller` **inherit** from `SeoController` or make your views use `SeoWebViewPage` as `pageBaseType`,
+you can access `SeoHelper` through a `Seo`-property:
+
+```
+// Controller
+public ActionResult Edit()
+{
+    Seo.PageTitle = "Current page title";
+    // ...
+}
+```
+
+```
+
+// View
+@{
+    Seo.MetaRobotsNoIndex = true;
+    // ...
+}
+```
+
+To configure Views to use `SeoWebViewPage` as `pageBaseType`, change the following in the `Web.config`-file
 inside the `Views`-directory:
 
 ```
@@ -53,15 +87,6 @@ inside the `Views`-directory:
         <!-- ... -->
         <pages pageBaseType="AspNetMvcSeo.SeoWebViewPage">
     <!-- ... -->
-```
-
-This makes a `Seo`-object available inside the Views:
-
-```
-@{
-    Layout = null;
-    Seo.MetaRobotsNoIndex = true; // Always block Robots from indexing this View
-}
 ```
 
 ## ActionFilterAttributes
