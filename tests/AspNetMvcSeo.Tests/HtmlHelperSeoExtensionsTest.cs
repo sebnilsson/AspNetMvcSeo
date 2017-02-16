@@ -21,9 +21,9 @@ namespace AspNetMvcSeo.Tests
         public void SeoLinkCanonical_EmptyArgumentWithValueInSeoHelper_ReturnsHtmlContainingValue()
         {
             // Arrange
-            var requestContext = RequestContextTestFactory.Create();
-            var htmlHelper = HtmlHelperTestFactory.Create(requestContext);
-            var seoHelper = SeoHelperTestFactory.Create(requestContext);
+            var viewContext = ViewContextTestFactory.Create();
+            var htmlHelper = HtmlHelperTestFactory.Create(viewContext);
+            var seoHelper = SeoHelperTestFactory.Create(viewContext);
 
             seoHelper.LinkCanonical = $"{TestData.TestLinkCanonical}";
 
@@ -41,11 +41,11 @@ namespace AspNetMvcSeo.Tests
             SeoLinkCanonical_EmptyArgumentWithAppRelativeValueInSeoHelper_ReturnsHtmlContainingValueAndIsAbsolute()
         {
             // Arrange
-            var requestContext = RequestContextTestFactory.Create();
-            var htmlHelper = HtmlHelperTestFactory.Create(requestContext);
-            var seoHelper = SeoHelperTestFactory.Create(requestContext);
+            var viewContext = ViewContextTestFactory.Create();
+            var htmlHelper = HtmlHelperTestFactory.Create(viewContext);
+            var seoHelper = SeoHelperTestFactory.Create(viewContext);
 
-            seoHelper.LinkCanonical = $"~{TestData.TestLinkCanonical}";
+            seoHelper.LinkCanonical = TestData.TestAppRelativeLinkCanonical;
 
             // Act
             var html = htmlHelper.SeoLinkCanonical();
@@ -91,6 +91,43 @@ namespace AspNetMvcSeo.Tests
         }
 
         [Fact]
+        public void SeoLinkCanonical_WithLinkCanonicalBase_ReturnsHtmlContainingLinkCanonicalBase()
+        {
+            const string LinkCanonicalBase = "https://linkcanonical.co/base/";
+
+            // Arrange
+            var htmlHelper = HtmlHelperTestFactory.Create();
+
+            // Act
+            var html = htmlHelper.SeoLinkCanonical(TestData.TestLinkCanonical, linkCanonicalBase: LinkCanonicalBase);
+
+            // Assert
+            bool htmlContainsLinkCanonicalBase = html.Contains(LinkCanonicalBase);
+
+            Assert.True(htmlContainsLinkCanonicalBase);
+        }
+
+        [Fact]
+        public void
+            SeoLinkCanonical_WithAppRelativeLinkCanonicalAndLinkCanonicalBase_ReturnsHtmlNotContainingAppRelativeChar()
+        {
+            const string LinkCanonicalBase = "https://linkcanonical.co/base/";
+
+            // Arrange
+            var htmlHelper = HtmlHelperTestFactory.Create();
+
+            // Act
+            var html = htmlHelper.SeoLinkCanonical(
+                TestData.TestAppRelativeLinkCanonical,
+                linkCanonicalBase: LinkCanonicalBase);
+
+            // Assert
+            bool htmlContainsAppRelativeChar = html.Contains("~");
+
+            Assert.False(htmlContainsAppRelativeChar);
+        }
+
+        [Fact]
         public void SeoMetaDescription_EmptyArgument_ReturnsNull()
         {
             // Arrange
@@ -107,9 +144,9 @@ namespace AspNetMvcSeo.Tests
         public void SeoMetaDescription_EmptyArgumentWithValueInSeoHelper_ReturnsHtmlContainingValue()
         {
             // Arrange
-            var requestContext = RequestContextTestFactory.Create();
-            var htmlHelper = HtmlHelperTestFactory.Create(requestContext);
-            var seoHelper = SeoHelperTestFactory.Create(requestContext);
+            var viewContext = ViewContextTestFactory.Create();
+            var htmlHelper = HtmlHelperTestFactory.Create(viewContext);
+            var seoHelper = SeoHelperTestFactory.Create(viewContext);
 
             seoHelper.MetaDescription = TestData.TestMetaDescription;
 
@@ -154,9 +191,9 @@ namespace AspNetMvcSeo.Tests
         public void SeoMetaKeywords_EmptyArgumentWithValueInSeoHelper_ReturnsHtmlContainingValue()
         {
             // Arrange
-            var requestContext = RequestContextTestFactory.Create();
-            var htmlHelper = HtmlHelperTestFactory.Create(requestContext);
-            var seoHelper = SeoHelperTestFactory.Create(requestContext);
+            var viewContext = ViewContextTestFactory.Create();
+            var htmlHelper = HtmlHelperTestFactory.Create(viewContext);
+            var seoHelper = SeoHelperTestFactory.Create(viewContext);
 
             seoHelper.MetaKeywords = TestData.TestMetaKeywords;
 
@@ -201,9 +238,9 @@ namespace AspNetMvcSeo.Tests
         public void SeoMetaRobotsIndex_EmptyArgumentWithMetaRobotsNoIndexInSeoHelper_ReturnsHtmlContainingValue()
         {
             // Arrange
-            var requestContext = RequestContextTestFactory.Create();
-            var htmlHelper = HtmlHelperTestFactory.Create(requestContext);
-            var seoHelper = SeoHelperTestFactory.Create(requestContext);
+            var viewContext = ViewContextTestFactory.Create();
+            var htmlHelper = HtmlHelperTestFactory.Create(viewContext);
+            var seoHelper = SeoHelperTestFactory.Create(viewContext);
 
             seoHelper.MetaRobotsNoIndex = true;
 
@@ -253,9 +290,9 @@ namespace AspNetMvcSeo.Tests
             string expectedContent)
         {
             // Arrange
-            var requestContext = RequestContextTestFactory.Create();
-            var htmlHelper = HtmlHelperTestFactory.Create(requestContext);
-            var seoHelper = SeoHelperTestFactory.Create(requestContext);
+            var viewContext = ViewContextTestFactory.Create();
+            var htmlHelper = HtmlHelperTestFactory.Create(viewContext);
+            var seoHelper = SeoHelperTestFactory.Create(viewContext);
 
             seoHelper.MetaRobotsIndex = robotsIndex;
 
@@ -290,36 +327,36 @@ namespace AspNetMvcSeo.Tests
         public void SeoTitle_EmptyArgumentWithPageTitleInSeoHelper_ReturnsNotNull()
         {
             // Arrange
-            var requestContext = RequestContextTestFactory.Create();
-            var htmlHelper = HtmlHelperTestFactory.Create(requestContext);
-            var seoHelper = SeoHelperTestFactory.Create(requestContext);
+            var viewContext = ViewContextTestFactory.Create();
+            var htmlHelper = HtmlHelperTestFactory.Create(viewContext);
+            var seoHelper = SeoHelperTestFactory.Create(viewContext);
 
-            seoHelper.PageTitle = TestData.TestPageTitle;
+            seoHelper.Title = TestData.TestTitle;
 
             // Act
             var html = htmlHelper.SeoTitle();
 
             // Assert
-            bool htmlContainsValue = html.Contains(TestData.TestPageTitle);
+            bool htmlContainsValue = html.Contains(TestData.TestTitle);
 
             Assert.True(htmlContainsValue);
         }
 
         [Fact]
-        public void SeoTitle_EmptyArgumentWithSectionTitleInSeoHelper_ReturnsHtmlContainingValue()
+        public void SeoTitle_EmptyArgumentWithBaseTitleInSeoHelper_ReturnsHtmlContainingValue()
         {
             // Arrange
-            var requestContext = RequestContextTestFactory.Create();
-            var htmlHelper = HtmlHelperTestFactory.Create(requestContext);
-            var seoHelper = SeoHelperTestFactory.Create(requestContext);
+            var viewContext = ViewContextTestFactory.Create();
+            var htmlHelper = HtmlHelperTestFactory.Create(viewContext);
+            var seoHelper = SeoHelperTestFactory.Create(viewContext);
 
-            seoHelper.SectionTitle = TestData.TestSectionTitle;
+            seoHelper.BaseTitle = TestData.TestBaseTitle;
 
             // Act
             var html = htmlHelper.SeoTitle();
 
             // Assert
-            bool htmlContainsValue = html.Contains(TestData.TestSectionTitle);
+            bool htmlContainsValue = html.Contains(TestData.TestBaseTitle);
 
             Assert.True(htmlContainsValue);
         }
@@ -331,10 +368,10 @@ namespace AspNetMvcSeo.Tests
             var htmlHelper = HtmlHelperTestFactory.Create();
 
             // Act
-            var html = htmlHelper.SeoTitle(TestData.TestPageTitle);
+            var html = htmlHelper.SeoTitle(TestData.TestTitle);
 
             // Assert
-            bool htmlContainsValue = html.Contains(TestData.TestPageTitle);
+            bool htmlContainsValue = html.Contains(TestData.TestTitle);
 
             Assert.True(htmlContainsValue);
         }

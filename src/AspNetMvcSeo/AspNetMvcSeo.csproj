@@ -60,11 +60,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="WebPageBaseExtensions.cs" />
+    <Compile Include="SeoBaseLinkCanonicalAttribute.cs" />
+    <Compile Include="SeoHelperLinkCanonicalHelper.cs" />
+    <Compile Include="SeoHelperTitleHelper.cs" />
+    <Compile Include="ViewDataDictionaryExtensions.cs" />
+    <Compile Include="ViewDataContainerExtensions.cs" />
     <Compile Include="ControllerBaseExtensions.cs" />
     <Compile Include="DictionaryExtensions.cs" />
     <Compile Include="HtmlHelperSeoExtensions.cs" />
-    <Compile Include="RequestContextExtensions.cs" />
     <Compile Include="RobotsIndexManager.cs" />
     <Compile Include="RobotsIndex.cs" />
     <Compile Include="SeoAttributeBase.cs" />
@@ -76,8 +79,8 @@
     <Compile Include="SeoMetaKeywordsAttribute.cs" />
     <Compile Include="SeoMetaDescriptionAttribute.cs" />
     <Compile Include="SeoTitleAttributeBase.cs" />
-    <Compile Include="SeoSectionTitleAttribute.cs" />
-    <Compile Include="SeoPageTitleAttribute.cs" />
+    <Compile Include="SeoBaseTitleAttribute.cs" />
+    <Compile Include="SeoTitleAttribute.cs" />
     <Compile Include="SeoController.cs" />
     <Compile Include="SeoWebViewPage.cs" />
     <Compile Include="SeoWebViewPageOfT.cs" />

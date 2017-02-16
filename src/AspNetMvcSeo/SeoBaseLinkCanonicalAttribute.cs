@@ -3,15 +3,13 @@
 namespace AspNetMvcSeo
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
-    public class SeoSectionTitleAttribute : SeoTitleAttributeBase
+    public class SeoBaseLinkCanonicalAttribute : SeoAttributeBase
     {
-        public SeoSectionTitleAttribute(string title)
-        {
-            this.Title = title;
-        }
+        private readonly string linkCanonical;
 
-        public SeoSectionTitleAttribute()
+        public SeoBaseLinkCanonicalAttribute(string linkCanonical)
         {
+            this.linkCanonical = linkCanonical;
         }
 
         public override void OnHandleSeoValues(SeoHelper seoHelper)
@@ -21,9 +19,7 @@ namespace AspNetMvcSeo
                 throw new ArgumentNullException(nameof(seoHelper));
             }
 
-            base.OnHandleSeoValues(seoHelper);
-
-            seoHelper.SectionTitle = this.Title;
+            seoHelper.BaseLinkCanonical = this.linkCanonical;
         }
     }
 }

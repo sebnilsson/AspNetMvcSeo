@@ -19,7 +19,5 @@ namespace AspNetMvcSeo
         }
 
         public string Format { get; set; }
-
-        public string Title { get; set; }
     }
 }

@@ -7,7 +7,7 @@ namespace AspNetMvcSeo.Tests.Website
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
-            filters.Add(new SeoSectionTitleAttribute("ASP.NET MVC SEO Test-Website"));
+            filters.Add(new SeoBaseTitleAttribute("ASP.NET MVC SEO Test-Website"));
         }
     }
 }

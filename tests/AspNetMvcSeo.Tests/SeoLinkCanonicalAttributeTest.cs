@@ -23,7 +23,7 @@ namespace AspNetMvcSeo.Tests
         public void OnHandleSeoValues_TestLinkCanonical_SetsSeoHelperCanonicalLinkOnly()
         {
             // Arrange
-            var attribute = new SeoLinkCanonicalAttribute(TestData.TestPageTitle);
+            var attribute = new SeoLinkCanonicalAttribute(TestData.TestTitle);
 
             var seo = SeoHelperTestFactory.Create();
 

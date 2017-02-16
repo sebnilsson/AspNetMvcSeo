@@ -1,14 +1,14 @@
-﻿using System.Web.Routing;
+﻿using System.Web.Mvc;
 
 namespace AspNetMvcSeo.Tests
 {
     internal static class SeoHelperTestFactory
     {
-        public static SeoHelper Create(RequestContext requestContext = null)
+        public static SeoHelper Create(ViewContext viewContext = null)
         {
-            requestContext = requestContext ?? RequestContextTestFactory.Create();
+            viewContext = viewContext ?? ViewContextTestFactory.Create();
 
-            var seo = new SeoHelper(requestContext.HttpContext);
+            var seo = viewContext.ViewData.GetSeoHelper();
             return seo;
         }
     }

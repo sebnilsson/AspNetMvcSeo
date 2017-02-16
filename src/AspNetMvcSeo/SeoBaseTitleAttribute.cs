@@ -3,15 +3,13 @@
 namespace AspNetMvcSeo
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
-    public class SeoPageTitleAttribute : SeoTitleAttributeBase
+    public class SeoBaseTitleAttribute : SeoTitleAttributeBase
     {
-        public SeoPageTitleAttribute(string title)
-        {
-            this.Title = title;
-        }
+        private readonly string title;
 
-        public SeoPageTitleAttribute()
+        public SeoBaseTitleAttribute(string title)
         {
+            this.title = title;
         }
 
         public override void OnHandleSeoValues(SeoHelper seoHelper)
@@ -23,14 +21,7 @@ namespace AspNetMvcSeo
 
             base.OnHandleSeoValues(seoHelper);
 
-            seoHelper.PageTitle = this.Title;
-
-            if (this.OverrideSectionTitle)
-            {
-                seoHelper.SectionTitle = null;
-            }
+            seoHelper.BaseTitle = this.title;
         }
-
-        public bool OverrideSectionTitle { get; set; }
     }
 }

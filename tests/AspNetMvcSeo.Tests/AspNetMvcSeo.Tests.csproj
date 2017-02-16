@@ -101,15 +101,17 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RequestContextTestFactory.cs" />
     <Compile Include="SeoHelperTest.cs" />
+    <Compile Include="SeoHelperTitleHelperTest.cs" />
     <Compile Include="SeoMetaRobotsNoIndexAttributeTest.cs" />
     <Compile Include="SeoMetaRobotsIndexAttributeTest.cs" />
     <Compile Include="SeoMetaKeywordsAttributeTest.cs" />
     <Compile Include="SeoMetaDescriptionAttributeTest.cs" />
     <Compile Include="SeoHelperTestFactory.cs" />
     <Compile Include="SeoLinkCanonicalAttributeTest.cs" />
-    <Compile Include="SeoSectionTitleAttributeTest.cs" />
-    <Compile Include="SeoPageTitleAttributeTest.cs" />
+    <Compile Include="SeoBaseTitleAttributeTest.cs" />
+    <Compile Include="SeoTitleAttributeTest.cs" />
     <Compile Include="TestData.cs" />
+    <Compile Include="ViewContextTestFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

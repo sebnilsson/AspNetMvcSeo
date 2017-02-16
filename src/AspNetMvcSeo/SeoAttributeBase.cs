@@ -12,8 +12,8 @@ namespace AspNetMvcSeo
                 throw new ArgumentNullException(nameof(filterContext));
             }
 
-            var seoHelper = new SeoHelper(filterContext.RequestContext.HttpContext);
-
+            var seoHelper = filterContext.Controller?.ViewData?.GetSeoHelper();
+            
             this.OnHandleSeoValues(seoHelper);
         }
 

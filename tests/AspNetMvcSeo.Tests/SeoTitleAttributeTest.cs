@@ -2,13 +2,13 @@
 
 namespace AspNetMvcSeo.Tests
 {
-    public class SeoPageTitleAttributeTest
+    public class SeoTitleAttributeTest
     {
         [Fact]
         public void OnHandleSeoValues_TestPageTitle_SetsPageTitle()
         {
             // Arrange
-            var attribute = new SeoPageTitleAttribute(TestData.TestPageTitle);
+            var attribute = new SeoTitleAttribute(TestData.TestTitle);
 
             var seo = SeoHelperTestFactory.Create();
 
@@ -16,14 +16,14 @@ namespace AspNetMvcSeo.Tests
             attribute.OnHandleSeoValues(seo);
 
             // Assert
-            Assert.Equal(TestData.TestPageTitle, seo.PageTitle);
+            Assert.Equal(TestData.TestTitle, seo.Title);
         }
 
         [Fact]
         public void OnHandleSeoValues_TestPageTitle_SetsPageTitleOnly()
         {
             // Arrange
-            var attribute = new SeoPageTitleAttribute(TestData.TestPageTitle);
+            var attribute = new SeoTitleAttribute(TestData.TestTitle);
 
             var seo = SeoHelperTestFactory.Create();
 
@@ -31,12 +31,13 @@ namespace AspNetMvcSeo.Tests
             attribute.OnHandleSeoValues(seo);
 
             // Assert
+            Assert.Null(seo.BaseLinkCanonical);
+            Assert.Null(seo.BaseTitle);
             Assert.Null(seo.LinkCanonical);
             Assert.Null(seo.MetaDescription);
             Assert.Null(seo.MetaKeywords);
             Assert.Null(seo.MetaRobotsIndex);
-            Assert.Null(seo.SectionTitle);
-            Assert.NotNull(seo.PageTitle);
+            Assert.NotNull(seo.Title);
             Assert.NotNull(seo.Title);
         }
 
@@ -44,7 +45,7 @@ namespace AspNetMvcSeo.Tests
         public void OnHandleSeoValues_TestPageTitleOnly_SetsTitle()
         {
             // Arrange
-            var attribute = new SeoPageTitleAttribute(TestData.TestPageTitle);
+            var attribute = new SeoTitleAttribute(TestData.TestTitle);
 
             var seo = SeoHelperTestFactory.Create();
 
@@ -52,7 +53,7 @@ namespace AspNetMvcSeo.Tests
             attribute.OnHandleSeoValues(seo);
 
             // Assert
-            Assert.Equal(TestData.TestPageTitle, seo.Title);
+            Assert.Equal(TestData.TestTitle, seo.Title);
         }
 
         [Fact]
@@ -62,8 +63,8 @@ namespace AspNetMvcSeo.Tests
             const string SecondPageTitle = "SECOND_PAGE_TITLE";
 
             // Arrange
-            var firstAttribute = new SeoPageTitleAttribute(FirstPageTitle);
-            var secondAttribute = new SeoPageTitleAttribute(SecondPageTitle);
+            var firstAttribute = new SeoTitleAttribute(FirstPageTitle);
+            var secondAttribute = new SeoTitleAttribute(SecondPageTitle);
 
             var seo = SeoHelperTestFactory.Create();
 
@@ -72,14 +73,14 @@ namespace AspNetMvcSeo.Tests
             secondAttribute.OnHandleSeoValues(seo);
 
             // Assert
-            Assert.Equal(SecondPageTitle, seo.PageTitle);
+            Assert.Equal(SecondPageTitle, seo.Title);
         }
 
         [Fact]
         public void OnHandleSeoValues_Format_SetsTitleFormat()
         {
             // Arrange
-            var attribute = new SeoPageTitleAttribute(TestData.TestPageTitle) { Format = TestData.TestTitleFormat };
+            var attribute = new SeoTitleAttribute(TestData.TestTitle) { Format = TestData.TestTitleFormat };
 
             var seo = SeoHelperTestFactory.Create();
 
@@ -91,10 +92,10 @@ namespace AspNetMvcSeo.Tests
         }
 
         [Fact]
-        public void OnHandleSeoValues_TestPageTitleAndOverrideSectionTitle_ResetsSectionTitle()
+        public void OnHandleSeoValues_TestPageTitleAndOverrideBaseTitle_ResetsBaseTitle()
         {
             // Arrange
-            var attribute = new SeoPageTitleAttribute(TestData.TestPageTitle) { OverrideSectionTitle = true };
+            var attribute = new SeoTitleAttribute(TestData.TestTitle) { OverrideBaseTitle = true };
 
             var seo = SeoHelperTestFactory.Create();
 
@@ -102,8 +103,8 @@ namespace AspNetMvcSeo.Tests
             attribute.OnHandleSeoValues(seo);
 
             // Assert
-            Assert.Equal(TestData.TestPageTitle, seo.PageTitle);
-            Assert.Null(seo.SectionTitle);
+            Assert.Equal(TestData.TestTitle, seo.Title);
+            Assert.Null(seo.BaseTitle);
         }
     }
 }

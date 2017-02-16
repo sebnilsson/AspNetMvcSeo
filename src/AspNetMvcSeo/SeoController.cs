@@ -16,7 +16,7 @@ namespace AspNetMvcSeo
             }
 
             base.Initialize(requestContext);
-            
+
             this.Seo = this.GetSeoHelper();
         }
     }

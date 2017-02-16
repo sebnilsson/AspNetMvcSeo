@@ -5,7 +5,8 @@ using AspNetMvcSeo.Tests.Website.Models;
 
 namespace AspNetMvcSeo.Tests.Website.Controllers
 {
-    [SeoPageTitle("Controller-title")]
+    [SeoBaseTitle("Controller-title")]
+    [SeoBaseLinkCanonical("https://attributebaselinkcanonical.co/base-path")]
     public class TestsController : SeoController
     {
         public ActionResult Index()
@@ -15,7 +16,7 @@ namespace AspNetMvcSeo.Tests.Website.Controllers
             return this.View("~/Views/Home/Index.cshtml", model);
         }
 
-        [SeoPageTitle("LinkCanonical")]
+        [SeoTitle("LinkCanonical")]
         public ActionResult LinkCanonical()
         {
             this.Seo.LinkCanonical = "~/Tests/LinkCanonicalAttribute_FromHelperProperty/?abc=123&param=param";
@@ -23,14 +24,14 @@ namespace AspNetMvcSeo.Tests.Website.Controllers
             return this.View();
         }
 
-        [SeoLinkCanonical("https://testwebsite.com/Tests/LinkCanonicalAttribute_FromAttribute/?abc=123&param=param")]
-        [SeoPageTitle("LinkCanonicalAttribute")]
+        [SeoLinkCanonical("TestsAttribute/LinkCanonicalAttribute_FromAttribute/?abc=123&param=param")]
+        [SeoTitle("LinkCanonicalAttribute")]
         public ActionResult LinkCanonicalAttribute()
         {
             return this.View("LinkCanonical");
         }
 
-        [SeoPageTitle("MetaDescription")]
+        [SeoTitle("MetaDescription")]
         public ActionResult MetaDescription()
         {
             this.Seo.MetaDescription = $"Test meta-description{Environment.NewLine}Newline-content";
@@ -38,14 +39,14 @@ namespace AspNetMvcSeo.Tests.Website.Controllers
             return this.View();
         }
 
-        [SeoMetaDescription("Test meta-description\r\nNewline-content")]
-        [SeoPageTitle("MetaDescriptionAttribute")]
+        [SeoMetaDescription("Test attribute meta-description\r\nNewline-content")]
+        [SeoTitle("MetaDescriptionAttribute")]
         public ActionResult MetaDescriptionAttribute()
         {
             return this.View("MetaDescription");
         }
 
-        [SeoPageTitle("MetaKeywords")]
+        [SeoTitle("MetaKeywords")]
         public ActionResult MetaKeywords()
         {
             this.Seo.MetaKeywords = $"Test meta-keywords{Environment.NewLine}Newline-content";
@@ -54,20 +55,20 @@ namespace AspNetMvcSeo.Tests.Website.Controllers
         }
 
         [SeoMetaKeywords("Test meta-keywords\r\nNewline-content")]
-        [SeoPageTitle("MetaKeywordsAttribute")]
+        [SeoTitle("MetaKeywordsAttribute")]
         public ActionResult MetaKeywordsAttribute()
         {
             return this.View("MetaKeywords");
         }
 
-        [SeoPageTitle("MetaRobotsIndexAttribute")]
+        [SeoTitle("MetaRobotsIndexAttribute")]
         [SeoMetaRobotsIndex]
         public ActionResult MetaRobotsIndexAttribute()
         {
             return this.View("MetaRobotsIndex");
         }
 
-        [SeoPageTitle("MetaRobotsIndexIndexNoFollow")]
+        [SeoTitle("MetaRobotsIndexIndexNoFollow")]
         public ActionResult MetaRobotsIndexIndexNoFollow()
         {
             this.Seo.MetaRobotsIndex = RobotsIndex.IndexNoFollow;
@@ -76,13 +77,13 @@ namespace AspNetMvcSeo.Tests.Website.Controllers
         }
 
         [SeoMetaRobotsIndex(RobotsIndex.IndexNoFollow)]
-        [SeoPageTitle("MetaRobotsIndexIndexNoFollowAttribute")]
+        [SeoTitle("MetaRobotsIndexIndexNoFollowAttribute")]
         public ActionResult MetaRobotsIndexIndexNoFollowAttribute()
         {
             return this.View("MetaRobotsIndex");
         }
 
-        [SeoPageTitle("MetaRobotsIndexNoIndexFollow")]
+        [SeoTitle("MetaRobotsIndexNoIndexFollow")]
         public ActionResult MetaRobotsIndexNoIndexFollow()
         {
             this.Seo.MetaRobotsIndex = RobotsIndex.NoIndexFollow;
@@ -91,13 +92,13 @@ namespace AspNetMvcSeo.Tests.Website.Controllers
         }
 
         [SeoMetaRobotsIndex(RobotsIndex.NoIndexFollow)]
-        [SeoPageTitle("MetaRobotsIndexNoIndexFollowAttribute")]
+        [SeoTitle("MetaRobotsIndexNoIndexFollowAttribute")]
         public ActionResult MetaRobotsIndexNoIndexFollowAttribute()
         {
             return this.View("MetaRobotsIndex");
         }
 
-        [SeoPageTitle("MetaRobotsIndexNoIndexNoFollow")]
+        [SeoTitle("MetaRobotsIndexNoIndexNoFollow")]
         public ActionResult MetaRobotsIndexNoIndexNoFollow()
         {
             this.Seo.MetaRobotsIndex = RobotsIndex.NoIndexNoFollow;
@@ -106,13 +107,13 @@ namespace AspNetMvcSeo.Tests.Website.Controllers
         }
 
         [SeoMetaRobotsIndex(RobotsIndex.NoIndexNoFollow)]
-        [SeoPageTitle("MetaRobotsIndexNoIndexNoFollowAttribute")]
+        [SeoTitle("MetaRobotsIndexNoIndexNoFollowAttribute")]
         public ActionResult MetaRobotsIndexNoIndexNoFollowAttribute()
         {
             return this.View("MetaRobotsIndex");
         }
 
-        [SeoPageTitle("MetaRobotsNoIndex")]
+        [SeoTitle("MetaRobotsNoIndex")]
         public ActionResult MetaRobotsNoIndex()
         {
             this.Seo.MetaRobotsNoIndex = true;
@@ -121,21 +122,22 @@ namespace AspNetMvcSeo.Tests.Website.Controllers
         }
 
         [SeoMetaRobotsNoIndex]
-        [SeoPageTitle("MetaRobotsNoIndexAttribute")]
+        [SeoTitle("MetaRobotsNoIndexAttribute")]
         public ActionResult MetaRobotsNoIndexAttribute()
         {
             return this.View("MetaRobotsIndex");
         }
 
-        [SeoPageTitle("Overridden action-title", OverrideSectionTitle = true)]
+        [SeoTitle("Overridden attribute action-title", OverrideBaseTitle = true)]
         public ActionResult Title()
         {
-            this.Seo.PageTitle = "Action-method-title";
+            this.Seo.Title = "Override action-method-title";
+            this.Seo.TitleFormat = "Base: '{1}' | Title: '{0}'";
 
             return this.View();
         }
 
-        [SeoPageTitle("Action-title")]
+        [SeoTitle("Attribute action-title", Format = "Attribute Base: '{1}' | Title: '{0}'")]
         public ActionResult TitleAttribute()
         {
             return this.View("Title");

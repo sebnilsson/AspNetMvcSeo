@@ -6,7 +6,10 @@ namespace AspNetMvcSeo
 {
     public static class HtmlHelperSeoExtensions
     {
-        public static IHtmlString SeoLinkCanonical(this HtmlHelper htmlHelper, string linkCanonical = null)
+        public static IHtmlString SeoLinkCanonical(
+            this HtmlHelper htmlHelper,
+            string linkCanonical = null,
+            string linkCanonicalBase = null)
         {
             if (htmlHelper == null)
             {
@@ -16,30 +19,23 @@ namespace AspNetMvcSeo
             var seoHelper = GetSeoHelper(htmlHelper);
 
             linkCanonical = linkCanonical ?? seoHelper.LinkCanonical;
-            if (linkCanonical == null)
-            {
-                return null;
-            }
 
-            var httpContext = htmlHelper.ViewContext.HttpContext;
+            linkCanonicalBase = linkCanonicalBase ?? seoHelper.BaseLinkCanonical;
 
-            var requestUri = httpContext.Request.Url;
-            if (requestUri == null)
-            {
-                return null;
-            }
+            string combinedLinkCanonical =
+                SeoHelperLinkCanonicalHelper.GetLinkCanonical(
+                    htmlHelper.ViewContext.HttpContext,
+                    linkCanonical,
+                    linkCanonicalBase);
 
-            string linkCanonicalHref = GetAbsoluteLinkCanonical(requestUri, linkCanonical, httpContext);
-
-            if (string.IsNullOrWhiteSpace(linkCanonicalHref)
-                || !Uri.IsWellFormedUriString(linkCanonicalHref, UriKind.Absolute))
+            if (string.IsNullOrWhiteSpace(combinedLinkCanonical))
             {
                 return null;
             }
 
             var tag = new TagBuilder("link");
             tag.Attributes["rel"] = "canonical";
-            tag.Attributes["href"] = linkCanonicalHref;
+            tag.Attributes["href"] = combinedLinkCanonical;
 
             return new HtmlString(tag.ToString(TagRenderMode.SelfClosing));
         }
@@ -108,7 +104,7 @@ namespace AspNetMvcSeo
 
             var seoHelper = GetSeoHelper(htmlHelper);
 
-            title = title ?? seoHelper.Title;
+            title = title ?? SeoHelperTitleHelper.GetTitle(seoHelper);
             if (title == null)
             {
                 return null;
@@ -119,30 +115,6 @@ namespace AspNetMvcSeo
             return new HtmlString(tag.ToString());
         }
 
-        private static string GetAbsoluteLinkCanonical(
-            Uri requestUri,
-            string linkCanonical,
-            HttpContextBase httpContext)
-        {
-            if (Uri.IsWellFormedUriString(linkCanonical, UriKind.Absolute))
-            {
-                return linkCanonical;
-            }
-
-            var appAbsolutePath = UrlHelper.GenerateContentUrl(linkCanonical, httpContext);
-
-            int queryIndex = appAbsolutePath.IndexOf('?');
-
-            string uriPath = (queryIndex >= 0) ? appAbsolutePath.Substring(0, queryIndex) : appAbsolutePath;
-            string uriQuery = (queryIndex >= 0) ? appAbsolutePath.Substring(queryIndex + 1) : string.Empty;
-            int uriPort = requestUri.Authority.Contains(":") ? requestUri.Port : -1;
-
-            var uri = new UriBuilder(requestUri.AbsoluteUri) { Path = uriPath, Query = uriQuery, Port = uriPort };
-
-            string absoluteLinkCanonicalUrl = uri.ToString();
-            return absoluteLinkCanonicalUrl;
-        }
-
         private static SeoHelper GetSeoHelper(this HtmlHelper htmlHelper)
         {
             if (htmlHelper.ViewContext == null)
@@ -151,7 +123,7 @@ namespace AspNetMvcSeo
                 throw new ArgumentOutOfRangeException(nameof(htmlHelper), message);
             }
 
-            var seoHelper = new SeoHelper(htmlHelper.ViewContext.HttpContext);
+            var seoHelper = htmlHelper.ViewData?.GetSeoHelper();
             return seoHelper;
         }
 
@@ -177,5 +149,29 @@ namespace AspNetMvcSeo
 
             return new HtmlString(tag.ToString(TagRenderMode.SelfClosing));
         }
+
+        //private static string GetAbsoluteLinkCanonical(
+        //    Uri requestUri,
+        //    string linkCanonical,
+        //    HttpContextBase httpContext)
+        //{
+        //    if (Uri.IsWellFormedUriString(linkCanonical, UriKind.Absolute))
+        //    {
+        //        return linkCanonical;
+        //    }
+
+        //    var appAbsolutePath = UrlHelper.GenerateContentUrl(linkCanonical, httpContext);
+
+        //    int queryIndex = appAbsolutePath.IndexOf('?');
+
+        //    string uriPath = (queryIndex >= 0) ? appAbsolutePath.Substring(0, queryIndex) : appAbsolutePath;
+        //    string uriQuery = (queryIndex >= 0) ? appAbsolutePath.Substring(queryIndex + 1) : string.Empty;
+        //    int uriPort = requestUri.Authority.Contains(":") ? requestUri.Port : -1;
+
+        //    var uri = new UriBuilder(requestUri.AbsoluteUri) { Path = uriPath, Query = uriQuery, Port = uriPort };
+
+        //    string absoluteLinkCanonicalUrl = uri.ToString();
+        //    return absoluteLinkCanonicalUrl;
+        //}
     }
 }
