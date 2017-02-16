@@ -28,7 +28,7 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 
 [assembly: AssemblyVersion("0.9.0.0")] // .NET
-[assembly: AssemblyFileVersion("0.9.0.0")] // Windows Explorer
-[assembly: AssemblyInformationalVersion("0.9.0")] // Nuget
+[assembly: AssemblyFileVersion("0.9.1.0")] // Windows Explorer
+[assembly: AssemblyInformationalVersion("0.9.1")] // Nuget
 
 [assembly: InternalsVisibleTo("AspNetMvcSeo.Tests")]

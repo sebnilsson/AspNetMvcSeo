@@ -12,7 +12,7 @@
     <licenseUrl>https://github.com/sebnilsson/AspNetMvcSeo/blob/master/LICENSE</licenseUrl>
     
     <dependencies>
-      <dependency id="Microsoft.AspNet.Mvc" version="5.2.0" />
+      <dependency id="Microsoft.AspNet.Mvc" version="5.0.0" />
     </dependencies>
   </metadata>
 </package>
